@@ -30,10 +30,12 @@ platform: x64
 #
 environment:
   global:
+    CMAKE_URL: https://github.com/Kitware/CMake/releases/download/v3.15.0-rc1/cmake-3.15.0-rc1.tar.gz
+    CMAKE_VERSION: cmake-3.15.0-rc1
     CYG_ROOT: C:\cygwin_spacey
     CYG_BASH: C:\cygwin_spacey\bin\bash
     CYG_MIRROR: http://mirrors.kernel.org/sourceware/cygwin/
-    CYG_PACKAGES: git,make,gcc-core,gcc-g++,cmake
+    CYG_PACKAGES: git,make,gcc-core,gcc-g++,wget
 
 test: off
 
@@ -43,6 +45,7 @@ test: off
 install:
   - ps: 'Start-FileDownload "https://cygwin.com/setup-x86_64.exe" -FileName "setup-x86_64.exe"'
   - 'setup-x86_64.exe --quiet-mode --no-shortcuts --only-site --root "%CYG_ROOT%" --site "%CYG_MIRROR%" --local-package-dir "%CYG_ROOT%\var\cache\setup" --packages "%CYG_PACKAGES%"'
+  - '%CYG_BASH% -lc "wget %CMAKE_URL%; tar -xzf %CMAKE_VERSION%.tar.gz; cd %CMAKE_VERSION%; ./bootstrap -- -DCMAKE_BUILD_TYPE:STRING=Release; make; make install"'
 
 #
 # Build
