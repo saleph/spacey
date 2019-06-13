@@ -35,7 +35,7 @@ environment:
     CYG_ROOT: C:\cygwin_spacey
     CYG_BASH: C:\cygwin_spacey\bin\bash
     CYG_MIRROR: http://mirrors.kernel.org/sourceware/cygwin/
-    CYG_PACKAGES: git,make,gcc-core,gcc-g++,wget
+    CYG_PACKAGES: git,make,gcc-core,gcc-g++,wget,ncurses-devel,libncurses++w10,libncursesw10,ncurses
 
 test: off
 
