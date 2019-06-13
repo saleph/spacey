@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-os: Visual Studio 2017
+os: Visual Studio 2019
 platform: x64
 
 #

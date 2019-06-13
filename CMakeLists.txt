@@ -23,12 +23,12 @@
 # SOFTWARE.
 
 cmake_minimum_required(VERSION 3.6)
-project(ci_helloworld C CXX)
+project(spacey C CXX)
 
 include(ExternalProject)
 find_package(Git REQUIRED)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # ------------------------------------------------------------------------------
@@ -294,9 +294,9 @@ set(MEMORYCHECK_COMMAND_OPTIONS "${MEMORYCHECK_COMMAND_OPTIONS} --error-exitcode
 # Main Executable
 # ------------------------------------------------------------------------------
 
-add_executable(ci_helloworld src/main.cpp)
-add_dependencies(ci_helloworld gsl)
-target_compile_definitions(ci_helloworld PRIVATE VIRTUAL= MAIN=main)
+add_executable(spacey src/main.cpp)
+add_dependencies(spacey gsl)
+target_compile_definitions(spacey PRIVATE VIRTUAL= MAIN=main)
 
 # ------------------------------------------------------------------------------
 # Tests

@@ -66,7 +66,7 @@ setup-x86_64.exe -q -P git,make,gcc-core,gcc-g++,cmake
 
 Install the following packages:
 - [Visual Studio SDK 10](https://go.microsoft.com/fwlink/?linkid=838916)
-- [Visual Studio 2017](https://www.visualstudio.com/thank-you-downloading-visual-studio/?sku=Community&rel=15#)
+- [Visual Studio 2019](https://www.visualstudio.com/thank-you-downloading-visual-studio/?sku=Community&rel=16#)
   - Check "Desktop development with C++"
   - Check "C++ CLI / Support"
   - Check "Standard Library Modules"
@@ -114,7 +114,7 @@ git clone https://github.com/ainfosec/ci_helloworld.git
 mkdir ci_helloworld/build
 cd ci_helloworld/build
 
-cmake -G "Visual Studio 15 2017 Win64" ..
+cmake -G "Visual Studio 16 2019" -A x64 ..
 
 msbuild ci_helloworld.sln
 ctest
