@@ -30,8 +30,8 @@ platform: x64
 #
 environment:
   global:
-    CYG_ROOT: C:\cygwin_ci_helloworld
-    CYG_BASH: C:\cygwin_ci_helloworld\bin\bash
+    CYG_ROOT: C:\cygwin_spacey
+    CYG_BASH: C:\cygwin_spacey\bin\bash
     CYG_MIRROR: http://mirrors.kernel.org/sourceware/cygwin/
     CYG_PACKAGES: git,make,gcc-core,gcc-g++,cmake
 
@@ -63,6 +63,6 @@ build_script:
   - mkdir build_msbuild
   - cd build_msbuild
   - cmake -G "Visual Studio 16 2019" -A x64 ..
-  - msbuild ci_helloworld.sln
+  - msbuild spacey.sln
   - ctest
   - cd ..

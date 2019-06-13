@@ -192,7 +192,7 @@ matrix:
           - g++-6
       coverity_scan:
         project:
-          name: "ainfosec/ci_helloworld"
+          name: "ainfosec/spacey"
           description: "A simple example of how to setup a complete CI environment for C and C++"
         notification_email: rianquinn@gmail.com
         build_command_prepend: "cmake -DCMAKE_CXX_COMPILER=g++-6 .."
