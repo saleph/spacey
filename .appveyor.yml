@@ -22,7 +22,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-os: Visual Studio 2019
+image:
+- Visual Studio 2019
+- ubuntu1804
+
+#os: Visual Studio 2019
 platform: x64
 
 #
@@ -42,10 +46,10 @@ test: off
 #
 # Setup Cygwin
 #
-install:
-  - ps: 'Start-FileDownload "https://cygwin.com/setup-x86_64.exe" -FileName "setup-x86_64.exe"'
-  - 'setup-x86_64.exe --quiet-mode --no-shortcuts --only-site --root "%CYG_ROOT%" --site "%CYG_MIRROR%" --local-package-dir "%CYG_ROOT%\var\cache\setup" --packages "%CYG_PACKAGES%"'
-  - '%CYG_BASH% -lc "wget %CMAKE_URL%; tar -xzf %CMAKE_VERSION%.tar.gz; cd %CMAKE_VERSION%; ./bootstrap -- -DCMAKE_BUILD_TYPE:STRING=Release; make; make install"'
+#install:
+#  - ps: 'Start-FileDownload "https://cygwin.com/setup-x86_64.exe" -FileName "setup-x86_64.exe"'
+#  - 'setup-x86_64.exe --quiet-mode --no-shortcuts --only-site --root "%CYG_ROOT%" --site "%CYG_MIRROR%" --local-package-dir "%CYG_ROOT%\var\cache\setup" --packages "%CYG_PACKAGES%"'
+#  - '%CYG_BASH% -lc "wget %CMAKE_URL%; tar -xzf %CMAKE_VERSION%.tar.gz; cd %CMAKE_VERSION%; ./bootstrap -- -DCMAKE_BUILD_TYPE:STRING=Release; make; make install"'
 
 #
 # Build
@@ -55,17 +59,26 @@ build_script:
   #
   # Cygwin
   #
-  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER; mkdir build_cygwin"'
-  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER/build_cygwin; cmake .."'
-  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER/build_cygwin; make"'
-  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER/build_cygwin; make test"'
+#  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER; mkdir build_cygwin"'
+#  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER/build_cygwin; cmake .."'
+#  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER/build_cygwin; make"'
+#  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER/build_cygwin; make test"'
 
   #
   # Visual Studio (MSBuild)
   #
-  - mkdir build_msbuild
-  - cd build_msbuild
-  - cmake -G "Visual Studio 16 2019" -A x64 ..
-  - msbuild spacey.sln
-  - ctest
+  - mkdir windows_build
+  - cd windows_build
+  - cmd: cmake -G "Visual Studio 16 2019" -A x64 ..
+  - cmd: msbuild spacey.sln
+  - cmd: ctest
   - cd ..
+  
+  #
+  # Linux GCC
+  #
+  - mkdir linux_build
+  - cd linux_build
+  - sh: cmake ..
+  - sh: make
+  - sh: make test
