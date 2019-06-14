@@ -27,8 +27,9 @@ image:
 - ubuntu1804
 
 platform: x64
-
 test: off
+
+build_script:
   #
   # Visual Studio (MSBuild)
   #
