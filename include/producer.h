@@ -42,7 +42,7 @@ public:
 
     /// Default Destructor
     ///
-    VIRTUAL ~producer() = default;
+    ~producer() = default;
 
     /// Print Message
     ///
@@ -53,7 +53,7 @@ public:
     /// - the main application defines VIRTUAL=
     /// - the unit test recompiles this source defining VIRTUAL=virtual
     ///
-    VIRTUAL void print_msg()
+    void print_msg()
     { std::cout << "hello world\n"; }
 
 public:

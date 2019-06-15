@@ -22,18 +22,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <catch/catch.hpp>
+#include <gtest/gtest.h>
 #include <producer.h>
-
 #include <iostream>
 
-TEST_CASE("producer: constructor / destructor")
+TEST(someshit, eloel1)
 {
-    CHECK_NOTHROW(producer{});
+    ASSERT_NO_THROW(producer{});
 }
 
-TEST_CASE("producer: print msg")
+TEST(someshit, eloel2)
 {
     producer p{};
-    CHECK_NOTHROW(p.print_msg());
+	ASSERT_NO_THROW(p.print_msg());
 }

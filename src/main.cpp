@@ -24,9 +24,11 @@
 
 #include <producer.h>
 #include <consumer.h>
+#include <gsl/gsl>
 
 int main(int argc, char *argv[])
 {
+	
     (void) argc;
     (void) argv;
     producer p{};
