@@ -50,23 +50,23 @@ before_script:
   # Update / Install CMake
   #
   - |
+    CMAKE_FTP="https://cmake.org/files/v3.15/cmake-3.15.0-rc1"
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      mkdir -p external/cmake
-      pushd external/cmake
-      wget https://cmake.org/files/v3.15/cmake-3.15.0-rc1-Linux-x86_64.sh
-      chmod +x cmake-*-Linux-x86_64.sh
-      ./cmake-*-Linux-x86_64.sh --exclude-subdir --skip-license
-      export PATH="${PWD}/bin:$PATH"
-      popd
+        mkdir -p external/cmake
+        pushd external/cmake
+        wget ${CMAKE_FTP}-Linux-x86_64.sh
+        chmod +x cmake-*-Linux-x86_64.sh
+        ./cmake-*-Linux-x86_64.sh --exclude-subdir --skip-license
+        export PATH="${PWD}/bin:$PATH"
+        popd
     else
-        curl https://cmake.org/files/v3.15/cmake-3.15.0-rc1-Darwin-x86_64.tar.gz -O
+        mkdir -p external/cmake
+        pushd external/cmake
+        curl ${CMAKE_FTP}-Darwin-x86_64.tar.gz -O
         tar -xzf cmake-*-Darwin-x86_64.tar.gz
-        sudo mv cmake-*-Darwin-x86_64/CMake.app /Applications
-        sudo /Applications/CMake.app/Contents/bin/cmake-gui --install
-        echo "export PATH=\"/Applications/CMake.app/Contents/bin\":\"$PATH\"" >> ~/.bashrc
-        source ~/.bashrc
-        cmake --version
-      #if ! brew ls --version cmake &>/dev/null; then brew update; brew install cmake; fi
+        sudo cmake-*-Darwin-x86_64/CMake.app/Contents/bin/cmake-gui --install
+        export PATH="${PWD}/cmake-*-Darwin-x86_64/CMake.app/Contents/bin":"$PATH"
+        popd
     fi
 
 #
@@ -146,10 +146,10 @@ matrix:
       apt:
         sources:
           - ubuntu-toolchain-r-test
-          - llvm-toolchain-trusty-4.0
+          - llvm-toolchain-trusty-8
         packages:
-          - clang-4.0
-          - clang-tidy-4.0
+          - clang-8
+          - clang-tidy-8
           - gcc-7
           - g++-7
     script:
@@ -383,22 +383,22 @@ matrix:
       - make test
 
   #
-  # Clang 4.0
+  # Clang 8.0
   #
   - os: linux
     env:
-      - TEST="Clang 4.0"
+      - TEST="Clang 8.0"
     addons:
       apt:
         sources:
           - ubuntu-toolchain-r-test
-          - llvm-toolchain-trusty-4.0
+          - llvm-toolchain-trusty-8
         packages:
-          - clang-4.0
+          - clang-8
           - gcc-7
           - g++-7
     script:
-      - cmake -DCMAKE_C_COMPILER=clang-4.0 -DCMAKE_CXX_COMPILER=clang++-4.0 ..
+      - cmake -DCMAKE_C_COMPILER=clang-8 -DCMAKE_CXX_COMPILER=clang++-8.0 ..
       - make
       - make test
 
