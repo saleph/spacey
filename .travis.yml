@@ -151,7 +151,7 @@ matrix:
           - llvm-toolchain-trusty-8
         packages:
           - clang-8
-          - clang-tidy-8
+          - clang-tidy-8.0
           - gcc-7
           - g++-7
     script:
