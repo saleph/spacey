@@ -385,11 +385,11 @@ matrix:
       - make test
 
   #
-  # Clang 8.0
+  # Clang 8
   #
   - os: linux
     env:
-      - TEST="Clang 8.0"
+      - TEST="Clang 8"
     addons:
       apt:
         sources:
@@ -400,7 +400,7 @@ matrix:
           - gcc-7
           - g++-7
     script:
-      - cmake -DCMAKE_C_COMPILER=clang-8 -DCMAKE_CXX_COMPILER=clang++-8.0 ..
+      - cmake -DCMAKE_C_COMPILER=clang-8 -DCMAKE_CXX_COMPILER=clang++-8 ..
       - make
       - make test
 
