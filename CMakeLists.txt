@@ -214,7 +214,7 @@ if(ENABLE_CPPCHECK)
     ExternalProject_Add(
         cppcheck
         GIT_REPOSITORY      https://github.com/danmar/cppcheck.git
-        GIT_TAG             1.79
+        GIT_TAG             1.87
         GIT_SHALLOW         1
         CMAKE_ARGS          ${CPPCHECK_CMAKE_ARGS}
         PREFIX              ${CMAKE_BINARY_DIR}/external/cppcheck/prefix
@@ -227,7 +227,7 @@ if(ENABLE_CPPCHECK)
 
     list(APPEND CPPCHECK_ARGS
         --enable=warning,style,performance,portability,unusedFunction
-        --std=c++11
+        --std=c++20
         --verbose
         --error-exitcode=1
         --language=c++
@@ -323,4 +323,3 @@ macro(do_test str)
 endmacro(do_test)
 
 do_test(producer)
-do_test(consumer)

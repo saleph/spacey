@@ -28,6 +28,9 @@
 language: cpp
 dist: trusty
 
+git:
+  quiet: true
+  
 #
 # Tokens
 #
@@ -50,15 +53,14 @@ before_script:
   # Update / Install CMake
   #
   - |
+    mkdir -p external/cmake
+    pushd external/cmake
     CMAKE_FTP="https://cmake.org/files/v3.15/cmake-3.15.0-rc1"
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-        mkdir -p external/cmake
-        pushd external/cmake
         wget ${CMAKE_FTP}-Linux-x86_64.sh
         chmod +x cmake-*-Linux-x86_64.sh
         ./cmake-*-Linux-x86_64.sh --exclude-subdir --skip-license
         export PATH="${PWD}/bin:$PATH"
-        popd
     else
         mkdir -p external/cmake
         pushd external/cmake
@@ -68,8 +70,8 @@ before_script:
         sudo CMake.app/Contents/bin/cmake-gui --install
         export PATH="${PWD}/CMake.app/Contents/bin:$PATH"
         popd
-        popd
     fi
+    popd
 
 #
 # Build Matrix
