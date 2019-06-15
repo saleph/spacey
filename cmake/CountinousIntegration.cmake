@@ -1,13 +1,13 @@
+include(ExternalProject)
+find_package(Git REQUIRED)
+
 # ------------------------------------------------------------------------------
 # Astyle
 # ------------------------------------------------------------------------------
-
 if(ENABLE_ASTYLE)
-
     list(APPEND ASTYLE_CMAKE_ARGS
         "-DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}"
     )
-
     ExternalProject_Add(
         astyle
         GIT_REPOSITORY      https://github.com/Bareflank/astyle.git
@@ -21,7 +21,6 @@ if(ENABLE_ASTYLE)
         SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/astyle/src
         BINARY_DIR          ${CMAKE_BINARY_DIR}/external/astyle/build
     )
-
     list(APPEND ASTYLE_ARGS
         --style=1tbs
         --lineend=linux
@@ -47,7 +46,6 @@ if(ENABLE_ASTYLE)
         ${CMAKE_SOURCE_DIR}/src/*.cpp
         ${CMAKE_SOURCE_DIR}/test/*.cpp
     )
-
     if(NOT WIN32 STREQUAL "1")
         add_custom_target(
             format
@@ -61,50 +59,39 @@ if(ENABLE_ASTYLE)
             COMMENT "running astyle"
         )
     endif()
-
 endif()
 
 # ------------------------------------------------------------------------------
 # Clang Tidy
 # ------------------------------------------------------------------------------
-
 if(ENABLE_CLANG_TIDY)
-
     find_program(CLANG_TIDY_BIN clang-tidy-8)
     find_program(RUN_CLANG_TIDY_BIN run-clang-tidy-8.py)
-
     if(CLANG_TIDY_BIN STREQUAL "CLANG_TIDY_BIN-NOTFOUND")
         message(FATAL_ERROR "unable to locate clang-tidy-8")
     endif()
-
     if(RUN_CLANG_TIDY_BIN STREQUAL "RUN_CLANG_TIDY_BIN-NOTFOUND")
         message(FATAL_ERROR "unable to locate run-clang-tidy-8.py")
     endif()
-
     list(APPEND RUN_CLANG_TIDY_BIN_ARGS
         -clang-tidy-binary ${CLANG_TIDY_BIN}
         -header-filter=.*
         -checks=clan*,cert*,misc*,perf*,cppc*,read*,mode*,-cert-err58-cpp,-misc-noexcept-move-constructor
     )
-
     add_custom_target(
         tidy
         COMMAND ${RUN_CLANG_TIDY_BIN} ${RUN_CLANG_TIDY_BIN_ARGS}
         COMMENT "running clang tidy"
     )
-
 endif()
 
 # ------------------------------------------------------------------------------
 # CppCheck
 # ------------------------------------------------------------------------------
-
 if(ENABLE_CPPCHECK)
-
     list(APPEND CPPCHECK_CMAKE_ARGS
         "-DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}"
     )
-
     ExternalProject_Add(
         cppcheck
         GIT_REPOSITORY      https://github.com/danmar/cppcheck.git
@@ -118,7 +105,6 @@ if(ENABLE_CPPCHECK)
         SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/cppcheck/src
         BINARY_DIR          ${CMAKE_BINARY_DIR}/external/cppcheck/build
     )
-
     list(APPEND CPPCHECK_ARGS
         --enable=warning,style,performance,portability,unusedFunction
         --std=c++11
@@ -131,19 +117,16 @@ if(ENABLE_CPPCHECK)
         ${CMAKE_SOURCE_DIR}/src/*.cpp
         ${CMAKE_SOURCE_DIR}/test/*.cpp
     )
-
     add_custom_target(
         check
         COMMAND ${CMAKE_BINARY_DIR}/bin/cppcheck ${CPPCHECK_ARGS}
         COMMENT "running cppcheck"
     )
-
 endif()
 
 # ------------------------------------------------------------------------------
 # Coverage
 # ------------------------------------------------------------------------------
-
 if(ENABLE_COVERAGE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g ")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
@@ -155,7 +138,6 @@ endif()
 # ------------------------------------------------------------------------------
 # Google Sanitizers
 # ------------------------------------------------------------------------------
-
 if(ENABLE_ASAN)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O1")
@@ -178,7 +160,6 @@ endif()
 # ------------------------------------------------------------------------------
 # Valgrind
 # ------------------------------------------------------------------------------
-
 set(MEMORYCHECK_COMMAND_OPTIONS "${MEMORYCHECK_COMMAND_OPTIONS} --leak-check=full")
 set(MEMORYCHECK_COMMAND_OPTIONS "${MEMORYCHECK_COMMAND_OPTIONS} --track-fds=yes")
 set(MEMORYCHECK_COMMAND_OPTIONS "${MEMORYCHECK_COMMAND_OPTIONS} --trace-children=yes")

@@ -63,27 +63,27 @@ find_package(GTest CONFIG REQUIRED)
 hunter_add_package(Microsoft.GSL)
 find_package(Microsoft.GSL CONFIG REQUIRED)
 
-
 # ------------------------------------------------------------------------------
 # Main Executable
 # ------------------------------------------------------------------------------
 add_executable(spacey src/main.cpp)
-add_dependencies(spacey Microsoft.GSL::GSL)
+target_link_libraries(spacey Microsoft.GSL::GSL)
 
 # ------------------------------------------------------------------------------
 # Tests
 # ------------------------------------------------------------------------------
 
+include("cmake/Utilities.cmake")
 include(CTest)
 
 add_library(business_logic STATIC src/main.cpp)
 target_link_libraries(business_logic PUBLIC Microsoft.GSL::GSL)
-#add_dependencies(business_logic PUBLIC Microsoft.GSL::GSL)
+add_dependencies(business_logic Microsoft.GSL::GSL)
 
 macro(do_test str)
     add_executable(test_${str} test/test_${str}.cpp)
     add_test(test_${str} test_${str})
-    target_link_libraries(test_${str} GTest::main)
+    target_link_libraries_system(test_${str} GTest::main)
     target_link_libraries(test_${str} business_logic)
     add_dependencies(test_${str} Microsoft.GSL::GSL)
 endmacro(do_test)
