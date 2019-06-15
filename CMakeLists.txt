@@ -227,7 +227,7 @@ if(ENABLE_CPPCHECK)
 
     list(APPEND CPPCHECK_ARGS
         --enable=warning,style,performance,portability,unusedFunction
-        --std=c++20
+        --std=c++11
         --verbose
         --error-exitcode=1
         --language=c++

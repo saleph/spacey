@@ -30,7 +30,7 @@ dist: trusty
 
 git:
   quiet: true
-  
+
 #
 # Tokens
 #
@@ -62,8 +62,6 @@ before_script:
         ./cmake-*-Linux-x86_64.sh --exclude-subdir --skip-license
         export PATH="${PWD}/bin:$PATH"
     else
-        mkdir -p external/cmake
-        pushd external/cmake
         curl ${CMAKE_FTP}-Darwin-x86_64.tar.gz -O
         tar -xzf cmake-*-Darwin-x86_64.tar.gz
         pushd cmake-*-Darwin-x86_64
