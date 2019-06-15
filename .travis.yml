@@ -148,10 +148,10 @@ matrix:
       apt:
         sources:
           - ubuntu-toolchain-r-test
-          - llvm-toolchain-trusty-8.0
+          - llvm-toolchain-trusty-8
         packages:
-          - clang-8.0
-          - clang-tidy-8.0
+          - clang-8
+          - clang-tidy-8
           - gcc-7
           - g++-7
     script:
