@@ -77,6 +77,7 @@ if(ENABLE_CLANG_TIDY)
         -clang-tidy-binary ${CLANG_TIDY_BIN}
         -header-filter=.*
         -checks=clan*,cert*,misc*,perf*,cppc*,read*,mode*,-cert-err58-cpp,-misc-noexcept-move-constructor
+		--
     )
     add_custom_target(
         tidy
