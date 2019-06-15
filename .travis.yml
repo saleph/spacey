@@ -157,7 +157,7 @@ matrix:
     script:
       - cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_CXX_COMPILER="g++-7" ..
       - make
-      - make tidy > output.txt
+      - make tidy | tee output.txt
       - |
         if [[ -n $(grep "warning: " output.txt) ]] || [[ -n $(grep "error: " output.txt) ]]; then
             echo "You must pass the clang tidy checks before submitting a pull request"
