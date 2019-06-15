@@ -53,18 +53,20 @@ before_script:
     CMAKE_FTP="https://cmake.org/files/v3.15/cmake-3.15.0-rc1"
     mkdir -p external/cmake
     pushd external/cmake
-#    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+    #    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
     wget ${CMAKE_FTP}-Linux-x86_64.sh
     chmod +x cmake-*-Linux-x86_64.sh
     ./cmake-*-Linux-x86_64.sh --exclude-subdir --skip-license
     export PATH="${PWD}/bin:$PATH"
-#    else
-#        curl ${CMAKE_FTP}-Darwin-x86_64.tar.gz -O
-#        tar -xzf cmake-*-Darwin-x86_64.tar.gz
-#        sudo cmake-*-Darwin-x86_64/CMake.app/Contents/bin/cmake-gui --install
-#        export PATH="${PWD}/cmake-*-Darwin-x86_64/CMake.app/Contents/bin":"$PATH"
-#        fi
+    #    else
+    #        curl ${CMAKE_FTP}-Darwin-x86_64.tar.gz -O
+    #        tar -xzf cmake-*-Darwin-x86_64.tar.gz
+    #        sudo cmake-*-Darwin-x86_64/CMake.app/Contents/bin/cmake-gui --install
+    #        export PATH="${PWD}/cmake-*-Darwin-x86_64/CMake.app/Contents/bin":"$PATH"
+    #        fi
     popd
+    
+    
 
 #
 # Build Matrix
