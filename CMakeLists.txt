@@ -296,7 +296,7 @@ set(MEMORYCHECK_COMMAND_OPTIONS "${MEMORYCHECK_COMMAND_OPTIONS} --error-exitcode
 
 add_executable(spacey src/main.cpp)
 add_dependencies(spacey gsl)
-target_compile_definitions(spacey PRIVATE VIRTUAL= MAIN=main)
+target_compile_definitions(spacey PRIVATE VIRTUAL=)
 
 # ------------------------------------------------------------------------------
 # Tests
@@ -309,7 +309,7 @@ add_dependencies(test_catch catch)
 
 add_library(business_logic STATIC src/main.cpp)
 add_dependencies(business_logic gsl)
-target_compile_definitions(business_logic PRIVATE VIRTUAL=virtual MAIN=unittest_main)
+target_compile_definitions(business_logic PRIVATE VIRTUAL=virtual)
 
 macro(do_test str)
     add_executable(test_${str} test/test_${str}.cpp)
@@ -322,6 +322,5 @@ macro(do_test str)
     target_compile_definitions(test_${str} PRIVATE VIRTUAL=virtual)
 endmacro(do_test)
 
-do_test(main)
 do_test(producer)
 do_test(consumer)
