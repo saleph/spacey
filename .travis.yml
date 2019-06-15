@@ -155,8 +155,8 @@ matrix:
           - gcc-7
           - g++-7
     script:
-      - cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_CXX_COMPILER="g++-7" .. > /dev/null
-      - make > /dev/null
+      - cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_CXX_COMPILER="g++-7" ..
+      - make
       - make tidy 2>&1 > output.txt
       - |
         if [[ -n $(grep "warning: " output.txt) ]] || [[ -n $(grep "error: " output.txt) ]]; then
