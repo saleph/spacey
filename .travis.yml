@@ -75,8 +75,8 @@ before_script:
   #
   # Pipefail + functions definitions
   #
-	- |
-	set +o pipefail
+  - set +o pipefail
+  - |
 	function checkForErrorOrWarningAndPrintIfAny() {
 		filename="$1"
         if [[ -n $(grep "warning" "$filename") ]] || [[ -n $(grep "error" "$filename") ]]; then
