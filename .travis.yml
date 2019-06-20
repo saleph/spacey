@@ -28,7 +28,6 @@
 language: cpp
 dist: trusty
 
-
 git:
   quiet: true
 
@@ -71,21 +70,21 @@ before_script:
         popd
     fi
     popd
-	
+    
   #
   # Pipefail + functions definitions
   #
-  #- set +o pipefail
+  - set +o pipefail
   - |
-	function checkForErrorOrWarningAndPrintIfAny() {
-		filename="$1"
+    checkForErrorOrWarningAndPrintIfAny() {
+        local filename="$1"
         if [[ -n $(grep -i "warning" "$filename") ]] || [[ -n $(grep -i "error" "$filename") ]]; then
             echo "There are some errors/warning in the $filename"
             echo ""
             cat "$filename"
-            exit -1;
+            exit -1
         fi
-	}
+    }
 
 #
 # Build Matrix
@@ -174,7 +173,7 @@ matrix:
       - cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_C_COMPILER=clang-8 -DCMAKE_CXX_COMPILER=clang++-8 .. > /dev/null
       - make > /dev/null
       - make tidy | tee output.txt
-	  - checkForErrorOrWarningAndPrintIfAny output.txt
+      - checkForErrorOrWarningAndPrintIfAny output.txt
 
   #
   # CppCheck
@@ -354,7 +353,7 @@ matrix:
     script:
       - cmake -DCMAKE_CXX_COMPILER="g++-7" ..
       - make | tee output.txt
-	  - checkForErrorOrWarningAndPrintIfAny output.txt
+      - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test
 
   #
@@ -373,7 +372,7 @@ matrix:
     script:
       - cmake -DCMAKE_CXX_COMPILER="g++-8" ..
       - make | tee output.txt
-	  - checkForErrorOrWarningAndPrintIfAny output.txt
+      - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test
 
   #
@@ -392,7 +391,7 @@ matrix:
     script:
       - cmake -DCMAKE_CXX_COMPILER="g++-9" ..
       - make | tee output.txt
-	  - checkForErrorOrWarningAndPrintIfAny output.txt
+      - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test
 
   #
@@ -413,7 +412,7 @@ matrix:
     script:
       - cmake -DCMAKE_C_COMPILER=clang-8 -DCMAKE_CXX_COMPILER=clang++-8 ..
       - make | tee output.txt
-	  - checkForErrorOrWarningAndPrintIfAny output.txt
+      - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test
 
   #
