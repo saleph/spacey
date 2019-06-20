@@ -170,8 +170,8 @@ matrix:
           - gcc-7
           - g++-7
     script:
-      - cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_C_COMPILER=clang-8 -DCMAKE_CXX_COMPILER=clang++-8 .. > /dev/null
-      - make > /dev/null
+      - cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_C_COMPILER=clang-8 -DCMAKE_CXX_COMPILER=clang++-8 ..
+      - make
       - make tidy | tee output.txt
       - checkForErrorOrWarningAndPrintIfAny output.txt
 
