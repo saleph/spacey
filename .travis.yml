@@ -70,6 +70,21 @@ before_script:
         popd
     fi
     popd
+	
+  #
+  # Pipefail + functions definitions
+  #
+	- |
+	set +o pipefail
+	function checkForErrorOrWarningAndPrintIfAny() {
+		filename="$1"
+        if [[ -n $(grep "warning" "$filename") ]] || [[ -n $(grep "error" "$filename") ]]; then
+            echo "There are some errors/warning in the $filename"
+            echo ""
+            cat "$filename"
+            exit -1;
+        fi
+	}
 
 #
 # Build Matrix
@@ -155,18 +170,10 @@ matrix:
           - gcc-7
           - g++-7
     script:
-      - cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_CXX_COMPILER="g++-7" .. > /dev/null
+      - cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_C_COMPILER=clang-8 -DCMAKE_CXX_COMPILER=clang++-8 .. > /dev/null
       - make > /dev/null
       - make tidy | tee output.txt
-      - |
-        if [[ -n $(grep "warning: " output.txt) ]] || [[ -n $(grep "error: " output.txt) ]]; then
-            echo "You must pass the clang tidy checks before submitting a pull request"
-            echo ""
-            grep --color -E 'warning: |error: ' output.txt
-            exit -1;
-        else
-            echo -e "\033[1;32m\xE2\x9C\x93 passed:\033[0m $1";
-        fi
+	  - checkForErrorOrWarningAndPrintIfAny output.txt
 
   #
   # CppCheck
@@ -345,7 +352,8 @@ matrix:
           - g++-7
     script:
       - cmake -DCMAKE_CXX_COMPILER="g++-7" ..
-      - make
+      - make | tee output.txt
+	  - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test
 
   #
@@ -363,7 +371,8 @@ matrix:
           - g++-8
     script:
       - cmake -DCMAKE_CXX_COMPILER="g++-8" ..
-      - make
+      - make | tee output.txt
+	  - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test
 
   #
@@ -381,7 +390,8 @@ matrix:
           - g++-9
     script:
       - cmake -DCMAKE_CXX_COMPILER="g++-9" ..
-      - make
+      - make | tee output.txt
+	  - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test
 
   #
@@ -401,7 +411,8 @@ matrix:
           - g++-7
     script:
       - cmake -DCMAKE_C_COMPILER=clang-8 -DCMAKE_CXX_COMPILER=clang++-8 ..
-      - make
+      - make | tee output.txt
+	  - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test
 
   #
