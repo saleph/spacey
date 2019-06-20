@@ -83,6 +83,7 @@ if(ENABLE_CLANG_TIDY)
         -header-filter=.*
         -checks=clan*,cert*,misc*,perf*,cppc*,read*,mode*,-cert-err58-cpp,-misc-noexcept-move-constructor
     )
+    message(${RUN_CLANG_TIDY_BIN_ARGS})
     add_custom_target(
         tidy
         COMMAND ${RUN_CLANG_TIDY_BIN} ${RUN_CLANG_TIDY_BIN_ARGS}
