@@ -1,3 +1,4 @@
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 include(ExternalProject)
 find_package(Git REQUIRED)
 
@@ -67,6 +68,10 @@ endif()
 if(ENABLE_CLANG_TIDY)
     find_program(CLANG_TIDY_BIN clang-tidy-8)
     find_program(RUN_CLANG_TIDY_BIN run-clang-tidy-8.py)
+    message("egaltom: clang tidy")
+    message(CLANG_TIDY_BIN)
+    message("egaltom: run clang tidy py")
+    message(RUN_CLANG_TIDY_BIN)
     if(CLANG_TIDY_BIN STREQUAL "CLANG_TIDY_BIN-NOTFOUND")
         message(FATAL_ERROR "unable to locate clang-tidy-8")
     endif()
@@ -77,7 +82,6 @@ if(ENABLE_CLANG_TIDY)
         -clang-tidy-binary ${CLANG_TIDY_BIN}
         -header-filter=.*
         -checks=clan*,cert*,misc*,perf*,cppc*,read*,mode*,-cert-err58-cpp,-misc-noexcept-move-constructor
-		--
     )
     add_custom_target(
         tidy

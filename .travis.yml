@@ -424,5 +424,6 @@ matrix:
     osx_image: xcode8.3
     script:
       - cmake ..
-      - make
+      - make | tee output.txt
+      - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test
