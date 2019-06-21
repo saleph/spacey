@@ -87,7 +87,7 @@ if(ENABLE_CLANG_TIDY)
     message(${RUN_CLANG_TIDY_BIN_ARGS})
     add_custom_target(
         tidy
-        COMMAND "${RUN_CLANG_TIDY_BIN} ${RUN_CLANG_TIDY_BIN_ARGS}"
+        COMMAND ${RUN_CLANG_TIDY_BIN} ${RUN_CLANG_TIDY_BIN_ARGS}
         COMMENT "running clang tidy"
     )
 endif()
