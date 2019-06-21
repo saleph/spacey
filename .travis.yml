@@ -74,7 +74,8 @@ before_script:
   #
   # Pipefail + functions definitions
   #
-  - set +o pipefail
+  - echo "set +o pipefail" >> ~/.bashrc
+  - source ~/.bashrc
   - |
     checkForErrorOrWarningAndPrintIfAny() {
         local filename="$1"
@@ -171,8 +172,8 @@ matrix:
           - g++-7
     script:
       - cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_C_COMPILER=clang-8 -DCMAKE_CXX_COMPILER=clang++-8 ..
-      - make
-      - make tidy | tee output.txt
+      - make VERBOSE=1
+      - make tidy VERBOSE=1 | tee output.txt
       - checkForErrorOrWarningAndPrintIfAny output.txt
 
   #
