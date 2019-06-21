@@ -171,9 +171,9 @@ matrix:
           - gcc-8
           - g++-8
     script:
-      - ll /usr/bin/
-      - ll /usr/bin/clang-tidy-8
-      - file /usr/bin/clang-tidy-8
+      - ls -all /usr/bin/
+      - ls -all /usr/bin/clang-tidy
+      - file /usr/bin/clang-tidy
       - cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_CXX_COMPILER="g++-8" ..
       - make VERBOSE=1
       - make tidy VERBOSE=1 | tee output.txt

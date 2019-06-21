@@ -66,17 +66,17 @@ endif()
 # Clang Tidy
 # ------------------------------------------------------------------------------
 if(ENABLE_CLANG_TIDY)
-    find_program(CLANG_TIDY_BIN clang-tidy-8)
-    find_program(RUN_CLANG_TIDY_BIN run-clang-tidy-8.py)
+    find_program(CLANG_TIDY_BIN clang-tidy)
+    find_program(RUN_CLANG_TIDY_BIN run-clang-tidy.py)
     message("egaltom: clang tidy")
     message(${CLANG_TIDY_BIN})
     message("egaltom: run clang tidy py")
     message(${RUN_CLANG_TIDY_BIN})
     if(CLANG_TIDY_BIN STREQUAL "CLANG_TIDY_BIN-NOTFOUND")
-        message(FATAL_ERROR "unable to locate clang-tidy-8")
+        message(FATAL_ERROR "unable to locate clang-tidy")
     endif()
     if(RUN_CLANG_TIDY_BIN STREQUAL "RUN_CLANG_TIDY_BIN-NOTFOUND")
-        message(FATAL_ERROR "unable to locate run-clang-tidy-8.py")
+        message(FATAL_ERROR "unable to locate run-clang-tidy.py")
     endif()
     list(APPEND RUN_CLANG_TIDY_BIN_ARGS
         -clang-tidy-binary ${CLANG_TIDY_BIN}
