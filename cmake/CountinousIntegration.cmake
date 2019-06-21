@@ -66,8 +66,8 @@ endif()
 # Clang Tidy
 # ------------------------------------------------------------------------------
 if(ENABLE_CLANG_TIDY)
-    find_program(CLANG_TIDY_BIN clang-tidy-8)
-    find_program(RUN_CLANG_TIDY_BIN run-clang-tidy-8.py)
+    find_program(CLANG_TIDY_BIN clang-tidy-4.0)
+    find_program(RUN_CLANG_TIDY_BIN run-clang-tidy-4.0.py)
     message("egaltom: clang tidy")
     message(${CLANG_TIDY_BIN})
     message("egaltom: run clang tidy py")
