@@ -55,7 +55,7 @@ before_script:
   - |
     mkdir -p external/cmake
     pushd external/cmake
-    CMAKE_FTP="https://cmake.org/files/v3.15/cmake-3.15.0-rc1"
+    CMAKE_FTP="https://cmake.org/files/v3.14/cmake-3.14.5"
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
         wget ${CMAKE_FTP}-Linux-x86_64.sh
         chmod +x cmake-*-Linux-x86_64.sh
@@ -172,7 +172,7 @@ matrix:
           - g++-8
     script:
       - ls -all /usr/bin/
-      - ls -all /usr/bin/clang-tidy
+      - ls -all /usr/lib/llvm-8/bin/clang-tidy
       - file /usr/bin/clang-tidy
       - cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_CXX_COMPILER="g++-8" ..
       - make VERBOSE=1
