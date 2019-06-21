@@ -164,14 +164,17 @@ matrix:
       apt:
         sources:
           - ubuntu-toolchain-r-test
-          - llvm-toolchain-trusty-4.0
+          - llvm-toolchain-trusty-8
         packages:
-          - clang-4.0
-          - clang-tidy-4.0
-          - gcc-7
-          - g++-7
+          - clang-8
+          - clang-tidy-8
+          - gcc-8
+          - g++-8
     script:
-      - cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_CXX_COMPILER="g++-7" ..
+      - ll /usr/bin/
+      - ll /usr/bin/clang-tidy-8
+      - file /usr/bin/clang-tidy-8
+      - cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_CXX_COMPILER="g++-8" ..
       - make VERBOSE=1
       - make tidy VERBOSE=1 | tee output.txt
       - checkForErrorOrWarningAndPrintIfAny output.txt
