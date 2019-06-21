@@ -66,6 +66,7 @@ endif()
 # Clang Tidy
 # ------------------------------------------------------------------------------
 if(ENABLE_CLANG_TIDY)
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
     find_program(CLANG_TIDY_BIN clang-tidy-8)
     find_program(RUN_CLANG_TIDY_BIN run-clang-tidy-8.py)
     message("egaltom: clang tidy")
@@ -85,8 +86,8 @@ if(ENABLE_CLANG_TIDY)
     )
     message(${RUN_CLANG_TIDY_BIN_ARGS})
     add_custom_target(
-        tidy PROPERTIES
-        CXX_CLANG_TIDY "${RUN_CLANG_TIDY_BIN} ${RUN_CLANG_TIDY_BIN_ARGS}"
+        tidy
+        COMMAND "${RUN_CLANG_TIDY_BIN} ${RUN_CLANG_TIDY_BIN_ARGS}"
         COMMENT "running clang tidy"
     )
 endif()
