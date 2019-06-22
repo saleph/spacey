@@ -33,6 +33,6 @@ int main(int argc, char *argv[])
     (void) argc;
     (void) argv;
     producer p{};
-    consumer c{ gsl::not_null<producer*>(&p) };
+    consumer c{ gsl::not_null<producer *>(&p) };
     return 0;
 }

@@ -72,7 +72,6 @@ target_link_libraries(spacey Microsoft.GSL::GSL)
 # ------------------------------------------------------------------------------
 # Tests
 # ------------------------------------------------------------------------------
-
 include("cmake/Utilities.cmake")
 include(CTest)
 
