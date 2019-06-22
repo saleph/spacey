@@ -256,7 +256,7 @@ matrix:
       - cmake -DENABLE_COVERAGE=ON -DCMAKE_CXX_COMPILER="g++-7" ..
       - make
       - make test
-      cd ..
+      - cd ..
       - |
         coveralls --build-root build --gcov-options '\-lp' \
           -e build/external \
