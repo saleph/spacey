@@ -31,6 +31,9 @@ dist: trusty
 git:
   quiet: true
 
+cache:
+  directories:
+    - "$HUNTER_ROOT"
 #
 # Tokens
 #
