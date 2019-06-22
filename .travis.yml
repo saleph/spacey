@@ -143,9 +143,10 @@ matrix:
           - gcc-7
           - g++-7
     script:
-      - cmake -DENABLE_ASTYLE=ON -DCMAKE_CXX_COMPILER="g++-7" ..
-      - make
-      - make format
+      - |
+        cmake -DENABLE_ASTYLE=ON -DCMAKE_CXX_COMPILER="g++-7" ..
+        make
+        make format
       - |
         if [[ -n $(git diff) ]]; then
           echo "You must run make format before submitting a pull request"
@@ -171,9 +172,10 @@ matrix:
           - gcc-8
           - g++-8
     script:
-      - cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_CXX_COMPILER="g++-8" ..
-      - make
-      - make tidy | tee output.txt
+      - |
+        cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_CXX_COMPILER="g++-8" ..
+        make
+        make tidy | tee output.txt
       - checkForErrorOrWarningAndPrintIfAny output.txt
 
   #
@@ -190,8 +192,9 @@ matrix:
           - gcc-7
           - g++-7
     script:
-      - cmake -DENABLE_CPPCHECK=ON -DCMAKE_CXX_COMPILER="g++-7" ..
-      - make
+      - |
+        cmake -DENABLE_CPPCHECK=ON -DCMAKE_CXX_COMPILER="g++-7" ..
+        make
       - make check
 
   #
@@ -232,10 +235,11 @@ matrix:
           - gcc-7
           - g++-7
     script:
-      - cmake -DENABLE_COVERAGE=ON -DCMAKE_CXX_COMPILER="g++-7" ..
-      - make
-      - make test
-      - cd ..
+      - |
+        cmake -DENABLE_COVERAGE=ON -DCMAKE_CXX_COMPILER="g++-7" ..
+        make
+        make test
+        cd ..
       - bash <(curl -s https://codecov.io/bash)
 
   #
@@ -252,11 +256,12 @@ matrix:
           - gcc-7
           - g++-7
     script:
-      - pip install --upgrade --user git+git://github.com/eddyxu/cpp-coveralls.git
-      - cmake -DENABLE_COVERAGE=ON -DCMAKE_CXX_COMPILER="g++-7" ..
-      - make
-      - make test
-      - cd ..
+      - |
+        pip install --upgrade --user git+git://github.com/eddyxu/cpp-coveralls.git
+        cmake -DENABLE_COVERAGE=ON -DCMAKE_CXX_COMPILER="g++-7" ..
+        make
+        make test
+      cd ..
       - |
         coveralls --build-root build --gcov-options '\-lp' \
           -e build/external \
@@ -279,8 +284,9 @@ matrix:
     env:
       - TEST="Google Address Sanitizer"
     script:
-      - cmake -DENABLE_ASAN=ON -DCMAKE_CXX_COMPILER="g++-7" ..
-      - make
+      - |
+        cmake -DENABLE_ASAN=ON -DCMAKE_CXX_COMPILER="g++-7" ..
+        make
       - make test
 
   #
@@ -334,8 +340,9 @@ matrix:
           - g++-7
           - valgrind
     script:
-      - cmake -DCMAKE_CXX_COMPILER="g++-7" ..
-      - make
+      - |
+        cmake -DCMAKE_CXX_COMPILER="g++-7" ..
+        make
       - ctest -T memcheck
 
   #
@@ -352,8 +359,9 @@ matrix:
           - gcc-7
           - g++-7
     script:
-      - cmake -DCMAKE_CXX_COMPILER="g++-7" ..
-      - make | tee output.txt
+      - |
+        cmake -DCMAKE_CXX_COMPILER="g++-7" ..
+        make | tee output.txt
       - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test
 
