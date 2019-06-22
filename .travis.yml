@@ -79,9 +79,8 @@ before_script:
   - |
     checkForErrorOrWarningAndPrintIfAny() {
         local filename="$1"
-        if [[ -n $(grep -i "warning" "$filename") ]] || [[ -n $(grep -i "error" "$filename") ]]; then
-            echo "There are some errors/warning in the $filename"
-            echo ""
+        if [[ -n $(grep -i "warning: |error: " "$filename") ]]; then
+            echo "There are some errors/warning in the ${filename}:"
             cat "$filename"
             exit -1
         fi
@@ -140,12 +139,13 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-7
-          - g++-7
+          - gcc-8
+          - g++-8
     script:
-      - cmake -DENABLE_ASTYLE=ON -DCMAKE_CXX_COMPILER="g++-7" ..
-      - make
-      - make format
+      - |
+        cmake -DENABLE_ASTYLE=ON -DCMAKE_CXX_COMPILER="g++-8" ..
+        make
+        make format
       - |
         if [[ -n $(git diff) ]]; then
           echo "You must run make format before submitting a pull request"
@@ -171,9 +171,10 @@ matrix:
           - gcc-8
           - g++-8
     script:
-      - cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_CXX_COMPILER="g++-8" ..
-      - make
-      - make tidy | tee output.txt
+      - |
+        cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_CXX_COMPILER="g++-8" ..
+        make
+        make tidy | tee output.txt
       - checkForErrorOrWarningAndPrintIfAny output.txt
 
   #
@@ -187,11 +188,12 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-7
-          - g++-7
+          - gcc-8
+          - g++-8
     script:
-      - cmake -DENABLE_CPPCHECK=ON -DCMAKE_CXX_COMPILER="g++-7" ..
-      - make
+      - |
+        cmake -DENABLE_CPPCHECK=ON -DCMAKE_CXX_COMPILER="g++-8" ..
+        make
       - make check
 
   #
@@ -205,14 +207,14 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-7
-          - g++-7
+          - gcc-8
+          - g++-8
       coverity_scan:
         project:
           name: "ainfosec/spacey"
           description: "A simple example of how to setup a complete CI environment for C and C++"
         notification_email: rianquinn@gmail.com
-        build_command_prepend: "cmake -DCMAKE_CXX_COMPILER=g++-7 .."
+        build_command_prepend: "cmake -DCMAKE_CXX_COMPILER=g++-8 .."
         build_command: "make"
         branch_pattern: master
     script:
@@ -229,13 +231,14 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-7
-          - g++-7
+          - gcc-8
+          - g++-8
     script:
-      - cmake -DENABLE_COVERAGE=ON -DCMAKE_CXX_COMPILER="g++-7" ..
-      - make
-      - make test
-      - cd ..
+      - |
+        cmake -DENABLE_COVERAGE=ON -DCMAKE_CXX_COMPILER="g++-8" ..
+        make
+        make test
+        cd ..
       - bash <(curl -s https://codecov.io/bash)
 
   #
@@ -249,14 +252,15 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-7
-          - g++-7
+          - gcc-8
+          - g++-8
     script:
-      - pip install --upgrade --user git+git://github.com/eddyxu/cpp-coveralls.git
-      - cmake -DENABLE_COVERAGE=ON -DCMAKE_CXX_COMPILER="g++-7" ..
-      - make
-      - make test
-      - cd ..
+      - |
+        pip install --upgrade --user git+git://github.com/eddyxu/cpp-coveralls.git
+        cmake -DENABLE_COVERAGE=ON -DCMAKE_CXX_COMPILER="g++-8" ..
+        make
+        make test
+        cd ..
       - |
         coveralls --build-root build --gcov-options '\-lp' \
           -e build/external \
@@ -274,13 +278,14 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-7
-          - g++-7
+          - gcc-8
+          - g++-8
     env:
       - TEST="Google Address Sanitizer"
     script:
-      - cmake -DENABLE_ASAN=ON -DCMAKE_CXX_COMPILER="g++-7" ..
-      - make
+      - |
+        cmake -DENABLE_ASAN=ON -DCMAKE_CXX_COMPILER="g++-8" ..
+        make
       - make test
 
   #
@@ -294,11 +299,12 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-7
-          - g++-7
+          - gcc-8
+          - g++-8
     script:
-      - cmake -DENABLE_USAN=ON -DCMAKE_CXX_COMPILER="g++-7" ..
-      - make
+      - |
+        cmake -DENABLE_USAN=ON -DCMAKE_CXX_COMPILER="g++-8" ..
+        make
       - make test
 
   #
@@ -312,11 +318,12 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-7
-          - g++-7
+          - gcc-8
+          - g++-8
     script:
-      - cmake -DENABLE_TSAN=ON -DCMAKE_CXX_COMPILER="g++-7" ..
-      - make
+      - |
+        cmake -DENABLE_TSAN=ON -DCMAKE_CXX_COMPILER="g++-8" ..
+        make
       - make test
 
   #
@@ -330,32 +337,14 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-7
-          - g++-7
+          - gcc-8
+          - g++-8
           - valgrind
     script:
-      - cmake -DCMAKE_CXX_COMPILER="g++-7" ..
-      - make
+      - |
+        cmake -DCMAKE_CXX_COMPILER="g++-8" ..
+        make
       - ctest -T memcheck
-
-  #
-  # G++ 7
-  #
-  - os: linux
-    env:
-      - TEST="G++ 7"
-    addons:
-      apt:
-        sources:
-          - ubuntu-toolchain-r-test
-        packages:
-          - gcc-7
-          - g++-7
-    script:
-      - cmake -DCMAKE_CXX_COMPILER="g++-7" ..
-      - make | tee output.txt
-      - checkForErrorOrWarningAndPrintIfAny output.txt
-      - make test
 
   #
   # G++ 8
@@ -371,8 +360,9 @@ matrix:
           - gcc-8
           - g++-8
     script:
-      - cmake -DCMAKE_CXX_COMPILER="g++-8" ..
-      - make | tee output.txt
+      - |
+        cmake -DCMAKE_CXX_COMPILER="g++-8" ..
+        make | tee output.txt
       - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test
 
@@ -390,8 +380,9 @@ matrix:
           - gcc-9
           - g++-9
     script:
-      - cmake -DCMAKE_CXX_COMPILER="g++-9" ..
-      - make | tee output.txt
+      - |
+        cmake -DCMAKE_CXX_COMPILER="g++-9" ..
+        make | tee output.txt
       - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test
 
@@ -408,11 +399,12 @@ matrix:
           - llvm-toolchain-trusty-8
         packages:
           - clang-8
-          - gcc-7
-          - g++-7
+          - gcc-8
+          - g++-8
     script:
-      - cmake -DCMAKE_C_COMPILER=clang-8 -DCMAKE_CXX_COMPILER=clang++-8 ..
-      - make | tee output.txt
+      - |
+        cmake -DCMAKE_C_COMPILER=clang-8 -DCMAKE_CXX_COMPILER=clang++-8 ..
+        make | tee output.txt
       - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test
 
@@ -424,7 +416,8 @@ matrix:
       - TEST="XCode 8.3"
     osx_image: xcode8.3
     script:
-      - cmake ..
-      - make | tee output.txt
+      - |
+        cmake ..
+        make | tee output.txt
       - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test
