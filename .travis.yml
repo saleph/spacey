@@ -170,10 +170,9 @@ matrix:
           - clang-tidy-8
           - gcc-8
           - g++-8
+          - cmake
+          - build-essential
     script:
-      - ls -all /usr/bin/
-      - ls -all /usr/lib/llvm-8/bin/clang-tidy
-      - file /usr/bin/clang-tidy
       - cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_CXX_COMPILER="g++-8" ..
       - make VERBOSE=1
       - make tidy VERBOSE=1 | tee output.txt
