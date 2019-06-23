@@ -22,17 +22,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <producer.h>
-#include <consumer.h>
+#include "neat/include/producer.hpp"
+#include "neat/include/consumer.hpp"
+#include <gsl/gsl>
 
-int
-MAIN(int argc, char *argv[])
-{
+int main(int argc, char* argv[]) {
+    gsl::index i = 0;
+    std::cout << ([i]() {
+        return i;
+    })();
     (void) argc;
     (void) argv;
-
     producer p{};
-    consumer c{&p};
-
+    consumer c{ gsl::not_null<producer*>(&p) };
     return 0;
 }

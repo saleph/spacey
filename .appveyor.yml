@@ -22,50 +22,30 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-os: Visual Studio 2019
+image:
+- Visual Studio 2019
+- ubuntu1804
+
 platform: x64
-
-#
-# Custom environment variables
-#
-environment:
-  global:
-    CMAKE_URL: https://github.com/Kitware/CMake/releases/download/v3.15.0-rc1/cmake-3.15.0-rc1.tar.gz
-    CMAKE_VERSION: cmake-3.15.0-rc1
-    CYG_ROOT: C:\cygwin_spacey
-    CYG_BASH: C:\cygwin_spacey\bin\bash
-    CYG_MIRROR: http://mirrors.kernel.org/sourceware/cygwin/
-    CYG_PACKAGES: git,make,gcc-core,gcc-g++,wget,ncurses-devel,libncurses++w10,libncursesw10,ncurses
-
 test: off
 
-#
-# Setup Cygwin
-#
-install:
-  - ps: 'Start-FileDownload "https://cygwin.com/setup-x86_64.exe" -FileName "setup-x86_64.exe"'
-  - 'setup-x86_64.exe --quiet-mode --no-shortcuts --only-site --root "%CYG_ROOT%" --site "%CYG_MIRROR%" --local-package-dir "%CYG_ROOT%\var\cache\setup" --packages "%CYG_PACKAGES%"'
-  - '%CYG_BASH% -lc "wget %CMAKE_URL%; tar -xzf %CMAKE_VERSION%.tar.gz; cd %CMAKE_VERSION%; ./bootstrap -- -DCMAKE_BUILD_TYPE:STRING=Release; make; make install"'
-
-#
-# Build
-#
 build_script:
-
-  #
-  # Cygwin
-  #
-  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER; mkdir build_cygwin"'
-  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER/build_cygwin; cmake .."'
-  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER/build_cygwin; make"'
-  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER/build_cygwin; make test"'
-
   #
   # Visual Studio (MSBuild)
   #
-  - mkdir build_msbuild
-  - cd build_msbuild
-  - cmake -G "Visual Studio 16 2019" -A x64 ..
-  - msbuild spacey.sln
-  - ctest
-  - cd ..
+  - cmd: mkdir windows_build
+  - cmd: cd windows_build
+  - cmd: cmake -G "Visual Studio 16 2019" -A x64 ..
+  - cmd: msbuild spacey.sln
+  - cmd: ctest
+  - cmd: cd ..
+  
+  #
+  # Linux GCC
+  #
+  - sh: mkdir linux_build
+  - sh: cd linux_build
+  - sh: cmake ..
+  - sh: make
+  - sh: make test
+  - sh: cd ..

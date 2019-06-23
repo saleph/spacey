@@ -28,6 +28,12 @@
 language: cpp
 dist: trusty
 
+git:
+  quiet: true
+
+cache:
+  directories:
+    - "$HUNTER_ROOT"
 #
 # Tokens
 #
@@ -50,17 +56,38 @@ before_script:
   # Update / Install CMake
   #
   - |
+    mkdir -p external/cmake
+    pushd external/cmake
+    CMAKE_FTP="https://cmake.org/files/v3.14/cmake-3.14.5"
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      mkdir -p external/cmake
-      pushd external/cmake
-      wget https://cmake.org/files/v3.8/cmake-3.8.0-Linux-x86_64.sh
-      chmod +x cmake-*-Linux-x86_64.sh
-      ./cmake-*-Linux-x86_64.sh --exclude-subdir --skip-license
-      export PATH="${PWD}/bin:$PATH"
-      popd
+        wget ${CMAKE_FTP}-Linux-x86_64.sh
+        chmod +x cmake-*-Linux-x86_64.sh
+        ./cmake-*-Linux-x86_64.sh --exclude-subdir --skip-license
+        export PATH="${PWD}/bin:$PATH"
     else
-      if ! brew ls --version cmake &>/dev/null; then brew update; brew install cmake; fi
+        curl ${CMAKE_FTP}-Darwin-x86_64.tar.gz -O
+        tar -xzf cmake-*-Darwin-x86_64.tar.gz
+        pushd cmake-*-Darwin-x86_64
+        sudo CMake.app/Contents/bin/cmake-gui --install
+        export PATH="${PWD}/CMake.app/Contents/bin:$PATH"
+        popd
     fi
+    popd
+    
+  #
+  # Pipefail + functions definitions
+  #
+  - echo "set +o pipefail" >> ~/.bashrc
+  - source ~/.bashrc
+  - |
+    checkForErrorOrWarningAndPrintIfAny() {
+        local filename="$1"
+        if [[ -n $(grep -i "warning: |error: " "$filename") ]]; then
+            echo "There are some errors/warning in the ${filename}:"
+            cat "$filename"
+            exit -1
+        fi
+    }
 
 #
 # Build Matrix
@@ -90,11 +117,11 @@ matrix:
         fi
 
   #
-  # Git Check
+  # Trailing whitespaces check
   #
   - os: linux
     env:
-      - TEST="Git Check"
+      - TEST="Trailing whitespaces check"
     script:
       - |
         if [[ -n $(git diff --check HEAD^) ]]; then
@@ -115,12 +142,13 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-6
-          - g++-6
+          - gcc-9
+          - g++-9
     script:
-      - cmake -DENABLE_ASTYLE=ON -DCMAKE_CXX_COMPILER="g++-6" ..
-      - make
-      - make format
+      - |
+        cmake -DENABLE_ASTYLE=ON -DCMAKE_CXX_COMPILER="g++-9" ..
+        make
+        make format
       - |
         if [[ -n $(git diff) ]]; then
           echo "You must run make format before submitting a pull request"
@@ -139,25 +167,18 @@ matrix:
       apt:
         sources:
           - ubuntu-toolchain-r-test
-          - llvm-toolchain-trusty-4.0
+          - llvm-toolchain-trusty-8
         packages:
-          - clang-4.0
-          - clang-tidy-4.0
-          - gcc-6
-          - g++-6
+          - clang-8
+          - clang-tidy-8
+          - gcc-9
+          - g++-9
     script:
-      - cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_CXX_COMPILER="g++-6" ..
-      - make
-      - make tidy > output.txt
       - |
-        if [[ -n $(grep "warning: " output.txt) ]] || [[ -n $(grep "error: " output.txt) ]]; then
-            echo "You must pass the clang tidy checks before submitting a pull request"
-            echo ""
-            grep --color -E '^|warning: |error: ' output.txt
-            exit -1;
-        else
-            echo -e "\033[1;32m\xE2\x9C\x93 passed:\033[0m $1";
-        fi
+        cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_CXX_COMPILER="g++-9" ..
+        make
+        make tidy | tee output.txt
+      - checkForErrorOrWarningAndPrintIfAny output.txt
 
   #
   # CppCheck
@@ -170,11 +191,12 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-6
-          - g++-6
+          - gcc-9
+          - g++-9
     script:
-      - cmake -DENABLE_CPPCHECK=ON -DCMAKE_CXX_COMPILER="g++-6" ..
-      - make
+      - |
+        cmake -DENABLE_CPPCHECK=ON -DCMAKE_CXX_COMPILER="g++-9" ..
+        make
       - make check
 
   #
@@ -188,14 +210,14 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-6
-          - g++-6
+          - gcc-9
+          - g++-9
       coverity_scan:
         project:
           name: "ainfosec/spacey"
           description: "A simple example of how to setup a complete CI environment for C and C++"
         notification_email: rianquinn@gmail.com
-        build_command_prepend: "cmake -DCMAKE_CXX_COMPILER=g++-6 .."
+        build_command_prepend: "cmake -DCMAKE_CXX_COMPILER=g++-9 .."
         build_command: "make"
         branch_pattern: master
     script:
@@ -212,13 +234,14 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-6
-          - g++-6
+          - gcc-9
+          - g++-9
     script:
-      - cmake -DENABLE_COVERAGE=ON -DCMAKE_CXX_COMPILER="g++-6" ..
-      - make
-      - make test
-      - cd ..
+      - |
+        cmake -DENABLE_COVERAGE=ON -DCMAKE_CXX_COMPILER="g++-9" ..
+        make
+        make test
+        cd ..
       - bash <(curl -s https://codecov.io/bash)
 
   #
@@ -232,14 +255,15 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-6
-          - g++-6
+          - gcc-9
+          - g++-9
     script:
-      - pip install --upgrade --user git+git://github.com/eddyxu/cpp-coveralls.git
-      - cmake -DENABLE_COVERAGE=ON -DCMAKE_CXX_COMPILER="g++-6" ..
-      - make
-      - make test
-      - cd ..
+      - |
+        pip install --upgrade --user git+git://github.com/eddyxu/cpp-coveralls.git
+        cmake -DENABLE_COVERAGE=ON -DCMAKE_CXX_COMPILER="g++-9" ..
+        make
+        make test
+        cd ..
       - |
         coveralls --build-root build --gcov-options '\-lp' \
           -e build/external \
@@ -257,13 +281,14 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-6
-          - g++-6
+          - gcc-9
+          - g++-9
     env:
       - TEST="Google Address Sanitizer"
     script:
-      - cmake -DENABLE_ASAN=ON -DCMAKE_CXX_COMPILER="g++-6" ..
-      - make
+      - |
+        cmake -DENABLE_ASAN=ON -DCMAKE_CXX_COMPILER="g++-9" ..
+        make
       - make test
 
   #
@@ -277,11 +302,12 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-6
-          - g++-6
+          - gcc-9
+          - g++-9
     script:
-      - cmake -DENABLE_USAN=ON -DCMAKE_CXX_COMPILER="g++-6" ..
-      - make
+      - |
+        cmake -DENABLE_USAN=ON -DCMAKE_CXX_COMPILER="g++-9" ..
+        make
       - make test
 
   #
@@ -295,11 +321,12 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-6
-          - g++-6
+          - gcc-9
+          - g++-9
     script:
-      - cmake -DENABLE_TSAN=ON -DCMAKE_CXX_COMPILER="g++-6" ..
-      - make
+      - |
+        cmake -DENABLE_TSAN=ON -DCMAKE_CXX_COMPILER="g++-9" ..
+        make
       - make test
 
   #
@@ -313,156 +340,75 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-6
-          - g++-6
+          - gcc-9
+          - g++-9
           - valgrind
     script:
-      - cmake -DCMAKE_CXX_COMPILER="g++-6" ..
-      - make
+      - |
+        cmake -DCMAKE_CXX_COMPILER="g++-9" ..
+        make
       - ctest -T memcheck
 
   #
-  # G++ 5
+  # G++ 8
   #
   - os: linux
     env:
-      - TEST="G++ 5"
+      - TEST="G++ 8"
     addons:
       apt:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-5
-          - g++-5
+          - gcc-8
+          - g++-8
     script:
-      - cmake -DCMAKE_CXX_COMPILER="g++-5" ..
-      - make
+      - |
+        cmake -DCMAKE_CXX_COMPILER="g++-8" ..
+        make | tee output.txt
+      - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test
 
   #
-  # G++ 6
+  # G++ 9
   #
   - os: linux
     env:
-      - TEST="G++ 6"
+      - TEST="G++ 9"
     addons:
       apt:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-6
-          - g++-6
+          - gcc-9
+          - g++-9
     script:
-      - cmake -DCMAKE_CXX_COMPILER="g++-6" ..
-      - make
+      - |
+        cmake -DCMAKE_CXX_COMPILER="g++-9" ..
+        make | tee output.txt
+      - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test
 
   #
-  # Clang 3.8
+  # Clang 8
   #
   - os: linux
     env:
-      - TEST="Clang 3.8"
+      - TEST="Clang 8"
     addons:
       apt:
         sources:
           - ubuntu-toolchain-r-test
-          - llvm-toolchain-trusty-4.0
+          - llvm-toolchain-trusty-8
         packages:
-          - clang-3.8
-          - gcc-6
-          - g++-6
+          - clang-8
+          - gcc-9
+          - g++-9
     script:
-      - cmake -DCMAKE_C_COMPILER=clang-3.8 -DCMAKE_CXX_COMPILER=clang++-3.8 ..
-      - make
-      - make test
-
-  #
-  # Clang 3.9
-  #
-  - os: linux
-    env:
-      - TEST="Clang 3.9"
-    addons:
-      apt:
-        sources:
-          - ubuntu-toolchain-r-test
-          - llvm-toolchain-trusty-3.9
-        packages:
-          - clang-3.9
-          - gcc-6
-          - g++-6
-    script:
-      - cmake -DCMAKE_C_COMPILER=clang-3.9 -DCMAKE_CXX_COMPILER=clang++-3.9 ..
-      - make
-      - make test
-
-  #
-  # Clang 4.0
-  #
-  - os: linux
-    env:
-      - TEST="Clang 4.0"
-    addons:
-      apt:
-        sources:
-          - ubuntu-toolchain-r-test
-          - llvm-toolchain-trusty-4.0
-        packages:
-          - clang-4.0
-          - gcc-6
-          - g++-6
-    script:
-      - cmake -DCMAKE_C_COMPILER=clang-4.0 -DCMAKE_CXX_COMPILER=clang++-4.0 ..
-      - make
-      - make test
-
-  #
-  # XCode 7.3
-  #
-  - os: osx
-    env:
-      - TEST="XCode 7.3"
-    osx_image: xcode7.3
-    script:
-      - cmake ..
-      - make
-      - make test
-
-  #
-  # XCode 8
-  #
-  - os: osx
-    env:
-      - TEST="XCode 8"
-    osx_image: xcode8
-    script:
-      - cmake ..
-      - make
-      - make test
-
-  #
-  # XCode 8.1
-  #
-  - os: osx
-    env:
-      - TEST="XCode 8.1"
-    osx_image: xcode8.1
-    script:
-      - cmake ..
-      - make
-      - make test
-
-  #
-  # XCode 8.2
-  #
-  - os: osx
-    env:
-      - TEST="XCode 8.2"
-    osx_image: xcode8.2
-    script:
-      - cmake ..
-      - make
+      - |
+        cmake -DCMAKE_C_COMPILER=clang-8 -DCMAKE_CXX_COMPILER=clang++-8 ..
+        make | tee output.txt
+      - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test
 
   #
@@ -473,6 +419,8 @@ matrix:
       - TEST="XCode 8.3"
     osx_image: xcode8.3
     script:
-      - cmake ..
-      - make
+      - |
+        cmake ..
+        make | tee output.txt
+      - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test

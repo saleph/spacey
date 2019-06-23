@@ -22,39 +22,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef PRODUCER_H
-#define PRODUCER_H
+#ifndef CONSUMER_H
+#define CONSUMER_H
 
-#include <iostream>
+#include <gsl/gsl>
+#include "../include/producer.hpp"
 
-/// Producer
+/// Consumer
 ///
-/// A simple example of a producer that is capable of being mocked while
-/// unit testing occurs.
+/// A simple example of a consumer that is capable of accepting the real
+/// producer, or a mocked version for unit testing.
 ///
-class producer
-{
+class consumer {
 public:
 
     /// Default Constructor
     ///
-    producer() = default;
+    /// @param p the producer that this consumer will use.
+    ///
+    explicit consumer(gsl::not_null<producer*> p) {
+        p->print_msg();
+    }
 
     /// Default Destructor
     ///
-    VIRTUAL ~producer() = default;
-
-    /// Print Message
-    ///
-    /// Prints hello world to the console. The function is marked "VIRTUAL"
-    /// instead of "virtual" because the this class is not intended to be
-    /// subclassed, but "virtual" is required for unit testing. Therefore,
-    /// this class is compiled twice:
-    /// - the main application defines VIRTUAL=
-    /// - the unit test recompiles this source defining VIRTUAL=virtual
-    ///
-    VIRTUAL void print_msg()
-    { std::cout << "hello world\n"; }
+    ~consumer() = default;
 
 public:
 
@@ -64,11 +56,11 @@ public:
     // should always be marked non-copyable unless such functionality is
     // specifically desired.
 
-    producer(producer &&) noexcept = default;               ///< Default move construction
-    producer &operator=(producer &&) noexcept = default;    ///< Default move operator
+    consumer(consumer&&) noexcept = default;                ///< Default move construction
+    consumer& operator=(consumer&&) noexcept = default;     ///< Default move operator
 
-    producer(const producer &) = delete;                    ///< Deleted copy construction
-    producer &operator=(const producer &) = delete;         ///< Deleted copy operator
+    consumer(const consumer&) = default;                     ///< Deleted copy construction
+    consumer& operator=(const consumer&) = default;          ///< Deleted copy operator
 };
 
 #endif

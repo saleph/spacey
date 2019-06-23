@@ -1,0 +1,1 @@
+// workaround for cmake "add_executable"
