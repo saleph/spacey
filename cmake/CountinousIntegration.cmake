@@ -22,39 +22,36 @@ if(ENABLE_ASTYLE)
         BINARY_DIR          ${CMAKE_BINARY_DIR}/external/astyle/build
     )
     list(APPEND ASTYLE_ARGS
-        --style=1tbs
+        --style=java
         --lineend=linux
         --suffix=none
         --pad-oper
         --unpad-paren
-        --break-closing-brackets
-        --align-pointer=name
-        --align-reference=name
+        --break-one-line-headers
+        --align-pointer=type
+        --align-reference=type
         --indent-preproc-define
         --indent-switches
         --indent-col1-comments
-        --keep-one-line-statements
-        --keep-one-line-blocks
         --pad-header
         --convert-tabs
         --min-conditional-indent=0
         --indent=spaces=4
         --close-templates
-        --add-brackets
-        --break-after-logical
+        --add-braces
         ${CMAKE_SOURCE_DIR}/include/*.h
         ${CMAKE_SOURCE_DIR}/src/*.cpp
         ${CMAKE_SOURCE_DIR}/test/*.cpp
     )
     if(NOT WIN32 STREQUAL "1")
         add_custom_target(
-            format
+            astyle
             COMMAND ${CMAKE_BINARY_DIR}/bin/astyle ${ASTYLE_ARGS}
             COMMENT "running astyle"
         )
     else()
         add_custom_target(
-            format
+            astyle
             COMMAND ${CMAKE_BINARY_DIR}/bin/astyle.exe ${ASTYLE_ARGS}
             COMMENT "running astyle"
         )
@@ -119,7 +116,7 @@ if(ENABLE_CPPCHECK)
         ${CMAKE_SOURCE_DIR}/test/*.cpp
     )
     add_custom_target(
-        check
+        cppcheck
         COMMAND ${CMAKE_BINARY_DIR}/bin/cppcheck ${CPPCHECK_ARGS}
         COMMENT "running cppcheck"
     )

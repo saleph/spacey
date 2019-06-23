@@ -33,16 +33,16 @@
 /// A simple example of a consumer that is capable of accepting the real
 /// producer, or a mocked version for unit testing.
 ///
-class consumer
-{
+class consumer {
 public:
 
     /// Default Constructor
     ///
     /// @param p the producer that this consumer will use.
     ///
-    explicit consumer(gsl::not_null<producer *> p)
-    { p->print_msg(); }
+    explicit consumer(gsl::not_null<producer*> p) {
+        p->print_msg();
+    }
 
     /// Default Destructor
     ///
@@ -56,11 +56,11 @@ public:
     // should always be marked non-copyable unless such functionality is
     // specifically desired.
 
-    consumer(consumer &&) noexcept = default;               ///< Default move construction
-    consumer &operator=(consumer &&) noexcept = default;    ///< Default move operator
+    consumer(consumer&&) noexcept = default;                ///< Default move construction
+    consumer& operator=(consumer&&) noexcept = default;     ///< Default move operator
 
-    consumer(const consumer &) = default;                    ///< Deleted copy construction
-    consumer &operator=(const consumer &) = default;         ///< Deleted copy operator
+    consumer(const consumer&) = default;                     ///< Deleted copy construction
+    consumer& operator=(const consumer&) = default;          ///< Deleted copy operator
 };
 
 #endif

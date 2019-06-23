@@ -32,8 +32,7 @@
 /// A simple example of a producer that is capable of being mocked while
 /// unit testing occurs.
 ///
-class producer
-{
+class producer {
 public:
 
     /// Default Constructor
@@ -53,8 +52,9 @@ public:
     /// - the main application defines VIRTUAL=
     /// - the unit test recompiles this source defining VIRTUAL=virtual
     ///
-    void print_msg()
-    { std::cout << "hello world\n"; }
+    void print_msg() {
+        std::cout << "hello world\n";
+    }
 
 public:
 
@@ -64,11 +64,11 @@ public:
     // should always be marked non-copyable unless such functionality is
     // specifically desired.
 
-    producer(producer &&) noexcept = default;               ///< Default move construction
-    producer &operator=(producer &&) noexcept = default;    ///< Default move operator
+    producer(producer&&) noexcept = default;                ///< Default move construction
+    producer& operator=(producer&&) noexcept = default;     ///< Default move operator
 
-    producer(const producer &) = delete;                    ///< Deleted copy construction
-    producer &operator=(const producer &) = delete;         ///< Deleted copy operator
+    producer(const producer&) = delete;                     ///< Deleted copy construction
+    producer& operator=(const producer&) = delete;          ///< Deleted copy operator
 };
 
 #endif

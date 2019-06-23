@@ -148,7 +148,7 @@ matrix:
       - |
         cmake -DENABLE_ASTYLE=ON -DCMAKE_CXX_COMPILER="g++-8" ..
         make
-        make format
+        make astyle
       - |
         if [[ -n $(git diff) ]]; then
           echo "You must run make format before submitting a pull request"
@@ -197,7 +197,7 @@ matrix:
       - |
         cmake -DENABLE_CPPCHECK=ON -DCMAKE_CXX_COMPILER="g++-8" ..
         make
-      - make check
+      - make cppcheck
 
   #
   # Coverity Scan

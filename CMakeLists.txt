@@ -37,6 +37,7 @@ include("cmake/HunterGate.cmake")
 HunterGate(
     URL "https://github.com/ruslo/hunter/archive/v0.23.190.tar.gz"
     SHA1 "bc7da329d2493201de28f0c2a5fcd4de1415c477"
+    LOCAL
 )
 
 # ------------------------------------------------------------------------------
@@ -52,14 +53,12 @@ include_directories(include)
 include_directories(SYSTEM ${CMAKE_BINARY_DIR}/include)
 
 # ------------------------------------------------------------------------------
-# GTest
+# Libraries
 # ------------------------------------------------------------------------------
+# GTest
 hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
-
-# ------------------------------------------------------------------------------
 # GSL
-# ------------------------------------------------------------------------------
 hunter_add_package(Microsoft.GSL)
 find_package(Microsoft.GSL CONFIG REQUIRED)
 
@@ -81,6 +80,8 @@ add_dependencies(business_logic Microsoft.GSL::GSL)
 
 macro(do_test str)
     if (NOT ENABLE_CLANG_TIDY)
+        # clang-tidy realy does not like GTest - exclude test from builds with
+        # clang-tidy enabled
         add_executable(test_${str} test/test_${str}.cpp)
         add_test(test_${str} test_${str})
         target_link_libraries_system(test_${str} GTest::main)

@@ -26,13 +26,14 @@
 #include <consumer.h>
 #include <gsl/gsl>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char* argv[]) {
     gsl::index i = 0;
-    std::cout << ([i]() {return i; })();
+    std::cout << ([i]() {
+        return i;
+    })();
     (void) argc;
     (void) argv;
     producer p{};
-    consumer c{ gsl::not_null<producer *>(&p) };
+    consumer c{ gsl::not_null<producer*>(&p) };
     return 0;
 }
