@@ -29,6 +29,7 @@ set(CMAKE_CXX_STANDARD 20)
 # CI setup
 # ------------------------------------------------------------------------------
 include("cmake/CountinousIntegration.cmake")
+include_directories(SYSTEM ${CMAKE_BINARY_DIR}/include)
 
 # ------------------------------------------------------------------------------
 # Hunter gate
