@@ -22,18 +22,45 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <producer.h>
-#include <consumer.h>
-#include <gsl/gsl>
+#ifndef CONSUMER_H
+#define CONSUMER_H
 
-int main(int argc, char* argv[]) {
-    gsl::index i = 0;
-    std::cout << ([i]() {
-        return i;
-    })();
-    (void) argc;
-    (void) argv;
-    producer p{};
-    consumer c{ gsl::not_null<producer*>(&p) };
-    return 0;
-}
+#include <gsl/gsl>
+#include "../include/producer.hpp"
+
+/// Consumer
+///
+/// A simple example of a consumer that is capable of accepting the real
+/// producer, or a mocked version for unit testing.
+///
+class consumer {
+public:
+
+    /// Default Constructor
+    ///
+    /// @param p the producer that this consumer will use.
+    ///
+    explicit consumer(gsl::not_null<producer*> p) {
+        p->print_msg();
+    }
+
+    /// Default Destructor
+    ///
+    ~consumer() = default;
+
+public:
+
+    // We define the copy and move constructors / operators because Clang Tidy
+    // (legitimately) complains about the definition of a destructor without
+    // defining the copy and move semantics for this class. In general a class
+    // should always be marked non-copyable unless such functionality is
+    // specifically desired.
+
+    consumer(consumer&&) noexcept = default;                ///< Default move construction
+    consumer& operator=(consumer&&) noexcept = default;     ///< Default move operator
+
+    consumer(const consumer&) = default;                     ///< Deleted copy construction
+    consumer& operator=(const consumer&) = default;          ///< Deleted copy operator
+};
+
+#endif

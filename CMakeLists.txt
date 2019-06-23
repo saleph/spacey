@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-cmake_minimum_required(VERSION 3.12.4)
+cmake_minimum_required(VERSION 3.13)
 set(CMAKE_CXX_STANDARD 20)
 
 # ------------------------------------------------------------------------------
@@ -45,49 +45,34 @@ HunterGate(
 # ------------------------------------------------------------------------------
 project(spacey C CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+# allow to use find_package for libraries built outside linking directory
+# used in Hunter packages linking - all added packages are built from root
+# directory, whereas all the usages are placed in subfolders like "common"
+cmake_policy(SET CMP0079 NEW)
 
 # ------------------------------------------------------------------------------
-# Includes
+# Hunter libraries in use
 # ------------------------------------------------------------------------------
-include_directories(include)
-include_directories(SYSTEM ${CMAKE_BINARY_DIR}/include)
-
-# ------------------------------------------------------------------------------
-# Libraries
-# ------------------------------------------------------------------------------
-# GTest
 hunter_add_package(GTest)
-find_package(GTest CONFIG REQUIRED)
-# GSL
 hunter_add_package(Microsoft.GSL)
-find_package(Microsoft.GSL CONFIG REQUIRED)
+
+# ------------------------------------------------------------------------------
+# Project components
+# ------------------------------------------------------------------------------
+add_subdirectory(common)
+add_subdirectory(neat)
 
 # ------------------------------------------------------------------------------
 # Main Executable
 # ------------------------------------------------------------------------------
-add_executable(spacey src/main.cpp)
-target_link_libraries(spacey Microsoft.GSL::GSL)
+add_executable(spacey main.cpp)
+target_link_libraries(spacey common)
+target_link_libraries(spacey neat)
 
 # ------------------------------------------------------------------------------
 # Tests
 # ------------------------------------------------------------------------------
-include("cmake/Utilities.cmake")
 include(CTest)
 
-add_library(business_logic STATIC src/main.cpp)
-target_link_libraries(business_logic PUBLIC Microsoft.GSL::GSL)
-add_dependencies(business_logic Microsoft.GSL::GSL)
-
-macro(do_test str)
-    if (NOT ENABLE_CLANG_TIDY)
-        # clang-tidy realy does not like GTest - exclude test from builds with
-        # clang-tidy enabled
-        add_executable(test_${str} test/test_${str}.cpp)
-        add_test(test_${str} test_${str})
-        target_link_libraries_system(test_${str} GTest::main)
-        target_link_libraries(test_${str} business_logic)
-        add_dependencies(test_${str} Microsoft.GSL::GSL)
-    endif()
-endmacro(do_test)
-
-do_test(producer)
+add_test(common_test common/common_test)
+add_test(neat_test neat/neat_test)
