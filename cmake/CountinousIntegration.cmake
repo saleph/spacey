@@ -39,7 +39,7 @@ if(ENABLE_ASTYLE)
         --indent=spaces=4
         --close-templates
         --add-braces
-        --recursive \"${CMAKE_SOURCE_DIR}/*.cpp\" 
+        --recursive \"${CMAKE_SOURCE_DIR}/*.cpp\"
         --recursive \"${CMAKE_SOURCE_DIR}/*.hpp\"
     )
     if(NOT WIN32 STREQUAL "1")
