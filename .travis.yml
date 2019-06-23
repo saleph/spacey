@@ -117,11 +117,11 @@ matrix:
         fi
 
   #
-  # Git Check
+  # Trailing whitespaces check
   #
   - os: linux
     env:
-      - TEST="Git Check"
+      - TEST="Trailing whitespaces check"
     script:
       - |
         if [[ -n $(git diff --check HEAD^) ]]; then
@@ -142,11 +142,11 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-8
-          - g++-8
+          - gcc-9
+          - g++-9
     script:
       - |
-        cmake -DENABLE_ASTYLE=ON -DCMAKE_CXX_COMPILER="g++-8" ..
+        cmake -DENABLE_ASTYLE=ON -DCMAKE_CXX_COMPILER="g++-9" ..
         make
         make format
       - |
@@ -171,11 +171,11 @@ matrix:
         packages:
           - clang-8
           - clang-tidy-8
-          - gcc-8
-          - g++-8
+          - gcc-9
+          - g++-9
     script:
       - |
-        cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_CXX_COMPILER="g++-8" ..
+        cmake -DENABLE_CLANG_TIDY=ON -DCMAKE_CXX_COMPILER="g++-9" ..
         make
         make tidy | tee output.txt
       - checkForErrorOrWarningAndPrintIfAny output.txt
@@ -191,11 +191,11 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-8
-          - g++-8
+          - gcc-9
+          - g++-9
     script:
       - |
-        cmake -DENABLE_CPPCHECK=ON -DCMAKE_CXX_COMPILER="g++-8" ..
+        cmake -DENABLE_CPPCHECK=ON -DCMAKE_CXX_COMPILER="g++-9" ..
         make
       - make check
 
@@ -210,14 +210,14 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-8
-          - g++-8
+          - gcc-9
+          - g++-9
       coverity_scan:
         project:
           name: "ainfosec/spacey"
           description: "A simple example of how to setup a complete CI environment for C and C++"
         notification_email: rianquinn@gmail.com
-        build_command_prepend: "cmake -DCMAKE_CXX_COMPILER=g++-8 .."
+        build_command_prepend: "cmake -DCMAKE_CXX_COMPILER=g++-9 .."
         build_command: "make"
         branch_pattern: master
     script:
@@ -234,11 +234,11 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-8
-          - g++-8
+          - gcc-9
+          - g++-9
     script:
       - |
-        cmake -DENABLE_COVERAGE=ON -DCMAKE_CXX_COMPILER="g++-8" ..
+        cmake -DENABLE_COVERAGE=ON -DCMAKE_CXX_COMPILER="g++-9" ..
         make
         make test
         cd ..
@@ -255,12 +255,12 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-8
-          - g++-8
+          - gcc-9
+          - g++-9
     script:
       - |
         pip install --upgrade --user git+git://github.com/eddyxu/cpp-coveralls.git
-        cmake -DENABLE_COVERAGE=ON -DCMAKE_CXX_COMPILER="g++-8" ..
+        cmake -DENABLE_COVERAGE=ON -DCMAKE_CXX_COMPILER="g++-9" ..
         make
         make test
         cd ..
@@ -281,13 +281,13 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-8
-          - g++-8
+          - gcc-9
+          - g++-9
     env:
       - TEST="Google Address Sanitizer"
     script:
       - |
-        cmake -DENABLE_ASAN=ON -DCMAKE_CXX_COMPILER="g++-8" ..
+        cmake -DENABLE_ASAN=ON -DCMAKE_CXX_COMPILER="g++-9" ..
         make
       - make test
 
@@ -302,11 +302,11 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-8
-          - g++-8
+          - gcc-9
+          - g++-9
     script:
       - |
-        cmake -DENABLE_USAN=ON -DCMAKE_CXX_COMPILER="g++-8" ..
+        cmake -DENABLE_USAN=ON -DCMAKE_CXX_COMPILER="g++-9" ..
         make
       - make test
 
@@ -321,11 +321,11 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-8
-          - g++-8
+          - gcc-9
+          - g++-9
     script:
       - |
-        cmake -DENABLE_TSAN=ON -DCMAKE_CXX_COMPILER="g++-8" ..
+        cmake -DENABLE_TSAN=ON -DCMAKE_CXX_COMPILER="g++-9" ..
         make
       - make test
 
@@ -340,12 +340,12 @@ matrix:
         sources:
           - ubuntu-toolchain-r-test
         packages:
-          - gcc-8
-          - g++-8
+          - gcc-9
+          - g++-9
           - valgrind
     script:
       - |
-        cmake -DCMAKE_CXX_COMPILER="g++-8" ..
+        cmake -DCMAKE_CXX_COMPILER="g++-9" ..
         make
       - ctest -T memcheck
 
@@ -402,11 +402,11 @@ matrix:
           - llvm-toolchain-trusty-8
         packages:
           - clang-8
-          - gcc-8
-          - g++-8
+          - gcc-9
+          - g++-9
     script:
       - |
-        cmake -DCMAKE_C_COMPILER=clang-8 -DCMAKE_CXX_COMPILER=clang++-8 ..
+        cmake -DCMAKE_C_COMPILER=clang-8 -DCMAKE_CXX_COMPILER=clang++-9 ..
         make | tee output.txt
       - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test
