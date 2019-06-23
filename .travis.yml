@@ -406,7 +406,7 @@ matrix:
           - g++-9
     script:
       - |
-        cmake -DCMAKE_C_COMPILER=clang-8 -DCMAKE_CXX_COMPILER=clang++-9 ..
+        cmake -DCMAKE_C_COMPILER=clang-8 -DCMAKE_CXX_COMPILER=clang++-8 ..
         make | tee output.txt
       - checkForErrorOrWarningAndPrintIfAny output.txt
       - make test
