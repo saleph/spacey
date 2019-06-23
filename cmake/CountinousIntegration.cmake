@@ -45,13 +45,13 @@ if(ENABLE_ASTYLE)
     )
     if(NOT WIN32 STREQUAL "1")
         add_custom_target(
-            astyle
+            format
             COMMAND ${CMAKE_BINARY_DIR}/bin/astyle ${ASTYLE_ARGS}
             COMMENT "running astyle"
         )
     else()
         add_custom_target(
-            astyle
+            format
             COMMAND ${CMAKE_BINARY_DIR}/bin/astyle.exe ${ASTYLE_ARGS}
             COMMENT "running astyle"
         )
@@ -116,7 +116,7 @@ if(ENABLE_CPPCHECK)
         ${CMAKE_SOURCE_DIR}/test/*.cpp
     )
     add_custom_target(
-        cppcheck
+        check
         COMMAND ${CMAKE_BINARY_DIR}/bin/cppcheck ${CPPCHECK_ARGS}
         COMMENT "running cppcheck"
     )
