@@ -39,10 +39,8 @@ if(ENABLE_ASTYLE)
         --indent=spaces=4
         --close-templates
         --add-braces
-        ${CMAKE_SOURCE_DIR}/*/include/*.h
-        ${CMAKE_SOURCE_DIR}/*/src/*.cpp
-        ${CMAKE_SOURCE_DIR}/*/test/*.cpp
-        ${CMAKE_SOURCE_DIR}/*.cpp
+        --recursive \"${CMAKE_SOURCE_DIR}/*.cpp\" 
+        --recursive \"${CMAKE_SOURCE_DIR}/*.hpp\"
     )
     if(NOT WIN32 STREQUAL "1")
         add_custom_target(
@@ -112,9 +110,11 @@ if(ENABLE_CPPCHECK)
         --language=c++
         -DMAIN=main
         -I ${CMAKE_SOURCE_DIR}/*/include
-        ${CMAKE_SOURCE_DIR}/*/include/*.h
+        ${CMAKE_SOURCE_DIR}/*/include/*.hpp
+        ${CMAKE_SOURCE_DIR}/*/src/*.hpp
         ${CMAKE_SOURCE_DIR}/*/src/*.cpp
         ${CMAKE_SOURCE_DIR}/*/test/*.cpp
+        ${CMAKE_SOURCE_DIR}/*/test/*.hpp
         ${CMAKE_SOURCE_DIR}/*.cpp
     )
     add_custom_target(
