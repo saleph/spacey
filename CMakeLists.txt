@@ -50,6 +50,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # used in Hunter packages linking - all added packages are built from root
 # directory, whereas all the usages are placed in subfolders like "common"
 cmake_policy(SET CMP0079 NEW)
+# clang-tidy does not like GTest, produces a lot of warnings, treated as errors
+set(SKIP_TEST_BUILD ${ENABLE_CLANG_TIDY})
 
 # ------------------------------------------------------------------------------
 # Hunter libraries in use

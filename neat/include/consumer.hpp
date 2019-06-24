@@ -26,7 +26,7 @@
 #define CONSUMER_H
 
 #include <gsl/gsl>
-#include "../include/producer.hpp"
+#include "neat/include/producer.hpp"
 
 /// Consumer
 ///

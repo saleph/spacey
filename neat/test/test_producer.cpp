@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <iostream>
-#include "../include/producer.hpp"
+#include "neat/include/producer.hpp"
 
 TEST(someshit, eloel1) {
     ASSERT_NO_THROW(producer{});
