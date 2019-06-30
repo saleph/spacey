@@ -58,6 +58,7 @@ set(SKIP_TEST_BUILD ${ENABLE_CLANG_TIDY})
 # ------------------------------------------------------------------------------
 hunter_add_package(GTest)
 hunter_add_package(Microsoft.GSL)
+hunter_add_package(Fruit)
 
 # ------------------------------------------------------------------------------
 # Project components

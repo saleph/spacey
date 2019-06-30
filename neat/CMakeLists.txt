@@ -2,17 +2,18 @@ include("../cmake/Utilities.cmake")
 
 find_package(GTest CONFIG REQUIRED)
 find_package(Microsoft.GSL CONFIG REQUIRED)
+find_package(Fruit CONFIG REQUIRED)
 
 # main target
-add_library(neat)
+add_library(neat src/Node.cpp src/Node.hpp)
 target_sources(neat
     PRIVATE
-        "src/null.cpp"
+        "src/Node.cpp"
     PUBLIC
-        "include/consumer.hpp"
-        "include/producer.hpp"
+        "src/Node.hpp"
 )
 target_link_libraries(neat PUBLIC Microsoft.GSL::GSL)
+target_link_libraries(neat PUBLIC Fruit::fruit)
 target_compile_definitions(neat PUBLIC NEAT)
 target_include_directories(neat PUBLIC ${PROJECT_SOURCE_DIR})
 
@@ -20,8 +21,8 @@ target_include_directories(neat PUBLIC ${PROJECT_SOURCE_DIR})
 if (NOT SKIP_TEST_BUILD)
     add_library(neat_test_lib)
     target_sources(neat_test_lib
-        PRIVATE
-            "test/test_producer.cpp"
+        PUBLIC
+            "test/NodeTest.cpp"
     )
     target_link_libraries_system(neat_test_lib GTest::main)
     target_link_libraries(neat_test_lib neat)
