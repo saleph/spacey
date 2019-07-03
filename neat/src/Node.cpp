@@ -11,7 +11,7 @@ auto Node::removeOutputNode(const gsl::not_null<Node*> node) -> void {
     outputs.erase(std::remove(std::begin(outputs), std::end(outputs), node), std::end(outputs));
 }
 
-auto Node::getOutputNodes() const -> std::vector<gsl::not_null<Node*> {
+auto Node::getOutputNodes() -> std::vector<gsl::not_null<Node*>> {
     return outputs;
 }
 

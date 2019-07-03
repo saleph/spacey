@@ -1,6 +1,6 @@
 include("../cmake/Utilities.cmake")
 
-find_package(GTest CONFIG REQUIRED)
+find_package(GMock CONFIG REQUIRED)
 find_package(Microsoft.GSL CONFIG REQUIRED)
 
 # main target
@@ -22,7 +22,7 @@ if (NOT SKIP_TEST_BUILD)
         PRIVATE
             "test/null_test.cpp"
     )
-    target_link_libraries_system(common_test_lib GTest::main)
+    target_link_libraries_system(common_test_lib GMock::main)
     target_link_libraries(common_test_lib Microsoft.GSL::GSL)
     target_link_libraries(common_test_lib common)
 
