@@ -3,18 +3,20 @@ include("../cmake/Utilities.cmake")
 find_package(Microsoft.GSL CONFIG REQUIRED)
 find_package(Fruit CONFIG REQUIRED)
 find_package(GMock CONFIG REQUIRED)
+find_package(Boost CONFIG REQUIRED)
 
 # main target
-add_library(neat src/Node.cpp src/Node.hpp)
+add_library(neat src/Neuron.cpp src/Neuron.hpp)
 target_sources(neat
     PRIVATE
-        "src/Node.cpp"
+        "src/Neuron.cpp"
     PUBLIC
-        "src/Activation.hpp"
-        "src/Node.hpp"
+        "src/Response.hpp"
+        "src/Neuron.hpp"
 )
 target_link_libraries(neat Microsoft.GSL::GSL)
 target_link_libraries_system(neat Fruit::fruit)
+target_link_libraries_system(neat Boost::boost)
 target_compile_definitions(neat PUBLIC NEAT)
 target_include_directories(neat PUBLIC ${PROJECT_SOURCE_DIR})
 
