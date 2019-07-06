@@ -12,12 +12,14 @@ namespace spacey::neat {
 class Neuron {
     static std::atomic_size_t NEURON_COUNTER;
 public:
+    using NeuronReferenceList = std::vector<std::reference_wrapper<Neuron>>;
+    explicit Neuron(const NeuronReferenceList& inputs);
     auto getInputs() const;
 
     auto operator==(const Neuron& other) const;
 private:
     const std::size_t id = ++NEURON_COUNTER;
-    std::vector<std::reference_wrapper<Neuron>> inputs;
+    const NeuronReferenceList& inputs;
     Response response{ 0.0L };
 };
 

@@ -4,3 +4,4 @@ CMakeSettings.json
 .vscode/
 doc/
 .idea/
+*.user
