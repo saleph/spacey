@@ -5,3 +5,7 @@ CMakeSettings.json
 doc/
 .idea/
 *.user
+.cproject
+.project
+.settings
+*.user*

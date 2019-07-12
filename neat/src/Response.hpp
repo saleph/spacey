@@ -8,10 +8,11 @@ namespace spacey::neat {
 
 struct Response {
     double value;
-    auto operator==(const Response& other) const {
-        return std::fabs(value - other.value) < std::numeric_limits<double>::epsilon();
-    }
 };
+
+inline auto operator==(const Response& first, const Response& second) -> bool {
+    return std::fabs(first.value - second.value) < std::numeric_limits<double>::epsilon();
+}
 
 }
 
