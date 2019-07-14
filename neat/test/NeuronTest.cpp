@@ -21,7 +21,7 @@ TEST_F(NeuronTestFixture, shouldANeuronHoldReferenceToListOfItsInputs) {
     auto neuron = Neuron{ neuronInputs };
     neuronInputs.emplace_back(&neuron, defaultWeight);
     ASSERT_THAT(neuron.getInputs(), 
-        UnorderedElementsAre(std::pair{ gsl::not_null(&neuron), defaultWeight }))
+        UnorderedElementsAre(std::pair{ &neuron, defaultWeight }))
         << "Neuron should hold reference to list with it's inputs";
 }
 
@@ -37,7 +37,7 @@ TEST_F(NeuronTestFixture, shouldNeuronBeAbleToHoldItselfInInputList) {
     auto&& message = "Neuron should be able to hold ref to itself in inputs";
     ASSERT_NO_THROW(neuronInputs.emplace_back(&neuron, defaultWeight)) << message;
     ASSERT_THAT(neuron.getInputs(),
-        UnorderedElementsAre(std::pair{ gsl::not_null(&neuron), defaultWeight }))
+        UnorderedElementsAre(std::pair{ &neuron, defaultWeight }))
         << message;
 }
 

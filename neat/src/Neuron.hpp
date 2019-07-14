@@ -12,8 +12,8 @@
 
 namespace spacey::neat {
 class Neuron;
-using ObservedNeuronList = std::vector<gsl::not_null<Neuron*>>;
-using NeuronInputs = std::vector<std::pair<gsl::not_null<Neuron*>, Weight>>;
+using ObservedNeuronList = std::vector<Neuron*>;
+using NeuronInputs = std::vector<std::pair<Neuron*, Weight>>;
 
 class Neuron {
     friend auto operator==(const Neuron& first, const Neuron& second) -> bool;
@@ -23,17 +23,11 @@ public:
     static auto activationFunction(const WeightedActivation activation) -> Response;
 
     explicit Neuron(const NeuronInputs& inputs);
-    /// Neurons should not be copied as they contains reference
-    /// to list of it's inputs. Copy constructor would be
-    /// misleading.
-    Neuron(const Neuron& other) = delete;
-    /// Neurons should not be copied nor moved as they contains reference
-    /// to list of it's inputs. Copy constructor would be
-    /// misleading.
-    Neuron(Neuron&& other) = delete;
+    Neuron(const Neuron& other) = default;
+    Neuron(Neuron&& other) = default;
     ~Neuron() noexcept = default;
-    Neuron& operator=(const Neuron& other) = delete;
-    Neuron& operator=(Neuron&& other) = delete;
+    Neuron& operator=(const Neuron& other) = default;
+    Neuron& operator=(Neuron&& other) = default;
 
     [[nodiscard]] auto getInputs() const -> const NeuronInputs&;
     /// Assignment operator for batch processing of the Neurons
