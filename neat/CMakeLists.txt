@@ -10,9 +10,15 @@ add_library(neat src/Neuron.cpp src/Neuron.hpp)
 target_sources(neat
     PRIVATE
         "src/Neuron.cpp"
+        "src/Net.cpp"
     PUBLIC
+        "src/Activation.hpp"
+        "src/Weight.hpp"
+        "src/WeightedActivation.hpp"
         "src/Response.hpp"
         "src/Neuron.hpp"
+        "src/NetInput.hpp"
+        "src/Net.hpp"
 )
 target_link_libraries(neat Microsoft.GSL::GSL)
 target_link_libraries_system(neat Fruit::fruit)
@@ -25,7 +31,7 @@ if (NOT SKIP_TEST_BUILD)
     add_library(neat_test_lib)
     target_sources(neat_test_lib
         PUBLIC
-            "test/NodeTest.cpp"
+            "test/NeuronTest.cpp"
     )
     target_link_libraries_system(neat_test_lib GMock::main)
     target_link_libraries(neat_test_lib Microsoft.GSL::GSL)

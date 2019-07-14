@@ -9,7 +9,7 @@ target_sources(common
     PRIVATE
         "src/null.cpp"
     PUBLIC
-        "include/null.hpp"
+        "include/FloatingPointUtils.hpp"
 )
 target_link_libraries(common PUBLIC Microsoft.GSL::GSL)
 target_compile_definitions(common PUBLIC COMMON)

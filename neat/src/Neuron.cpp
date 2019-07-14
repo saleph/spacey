@@ -1,20 +1,18 @@
-#include <algorithm>
-#include <limits>
+#include <cmath>
 #include "neat/src/Neuron.hpp"
 
 namespace spacey::neat {
 std::atomic_size_t Neuron::neuronCounter = 0u;
 
-auto Neuron::getNeverAppearingNeuronInstance() {
-    static const NeuronReferenceList dummyInputsList;
-    return Neuron(std::numeric_limits<std::size_t>::max(), dummyInputsList);
+auto Neuron::activationFunction(const WeightedActivation activation) -> Response {
+    return { tanh(activation.value) };
 }
 
-Neuron::Neuron(const NeuronReferenceList& inputs)
+Neuron::Neuron(const NeuronInputs& inputs)
     : inputs{ inputs }
 { }
 
-auto Neuron::getInputs() const -> const NeuronReferenceList& {
+auto Neuron::getInputs() const -> const NeuronInputs & {
     return inputs;
 }
 
@@ -31,7 +29,7 @@ auto Neuron::getResponse() const -> Response {
     return response;
 }
 
-Neuron::Neuron(const std::size_t id, const NeuronReferenceList& inputs)
+Neuron::Neuron(const std::size_t id, const NeuronInputs& inputs)
     : id{ id }, inputs{ inputs }
 { }
 

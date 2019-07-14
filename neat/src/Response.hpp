@@ -1,8 +1,7 @@
 #ifndef SPACEY_RESPONSE_HPP
 #define SPACEY_RESPONSE_HPP
 
-#include <cmath>
-#include <limits>
+#include "common/include/FloatingPointUtils.hpp"
 
 namespace spacey::neat {
 
@@ -10,8 +9,8 @@ struct Response {
     double value;
 };
 
-inline auto operator==(const Response& first, const Response& second) -> bool {
-    return std::fabs(first.value - second.value) < std::numeric_limits<double>::epsilon();
+inline auto operator==(const Response first, const Response second) -> bool {
+    return common::areFloatingPointEquals(first.value, second.value);
 }
 
 }
