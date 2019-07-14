@@ -1,5 +1,6 @@
 #include "neat/src/Net.hpp"
 #include <algorithm>
+#include <numeric>
 #include <boost/iterator/indirect_iterator.hpp>
 #include "neat/src/Neuron.hpp"
 #include "neat/src/Weight.hpp"
@@ -7,7 +8,8 @@
 namespace spacey::neat {
 
 auto Net::getNetResponseFor(const std::vector<NetInput>& inputs) -> std::vector<Response> {
-    std::transform(std::begin(inputs), std::end(inputs), std::begin(netInputs), [](auto&& input) {
+    auto indirectNetInputs = boost::indirect_iterator<ObservedNeuronList::iterator, Neuron>(netInputs.begin());
+    std::transform(std::begin(inputs), std::end(inputs), indirectNetInputs, [](auto&& input) {
         // no scaling of the input
         const auto inputWeight = Weight{ 1.0L };
         return Neuron::activationFunction(input * inputWeight);
