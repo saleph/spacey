@@ -8,8 +8,9 @@
 namespace spacey::neat {
 
 auto Net::getNetResponseFor(const std::vector<NetInput>& inputs) -> std::vector<Response> {
-    auto indirectNetInputs = boost::indirect_iterator<ObservedNeuronList::iterator, Neuron>(netInputs.begin());
-    std::transform(std::begin(inputs), std::end(inputs), indirectNetInputs, [](auto&& input) {
+    std::transform(std::begin(inputs), std::end(inputs), 
+        boost::indirect_iterator<ObservedNeuronList::iterator, Neuron>(netInputs.begin()),
+        [](auto&& input) {
         // no scaling of the input
         const auto inputWeight = Weight{ 1.0L };
         return Neuron::activationFunction(input * inputWeight);
