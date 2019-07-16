@@ -7,10 +7,24 @@
 
 namespace spacey::neat {
 
+Net::Net(std::size_t inputSize, std::size_t outputSize) {
+    neurons.reserve(inputSize + outputSize);
+    netInputs.reserve(inputSize);
+    netOutputs.reserve(outputSize);
+    while(inputSize--) {
+        auto& neuron = neurons.emplace_back(std::make_unique<Neuron>());
+        netInputs.emplace_back(neuron.get());
+    }
+    while (outputSize--) {
+        auto& neuron = neurons.emplace_back(std::make_unique<Neuron>());
+        netOutputs.emplace_back(neuron.get());
+    }
+}
+
 auto Net::getNetResponseFor(const std::vector<NetInput>& inputs) -> std::vector<Response> {
-    std::transform(std::begin(inputs), std::end(inputs), 
-        boost::indirect_iterator<ObservedNeuronList::iterator, Neuron>(netInputs.begin()),
-        [](auto&& input) {
+    std::transform(std::begin(inputs), std::end(inputs),
+                   boost::indirect_iterator<ObservedNeuronList::iterator, Neuron>(netInputs.begin()),
+    [](auto&& input) {
         // no scaling of the input
         const auto inputWeight = Weight{ 1.0L };
         return Neuron::activationFunction(input * inputWeight);
@@ -45,8 +59,8 @@ void Net::calculateResponseFor(Neuron& neuron, VisitedNeuronsMap& visited) {
     // calculated yet. That's normal, it's just a cycle in the network, it will
     // behave like a recurrent neuron (it will use value from previous evaluation)
     const auto weightedActivation = std::transform_reduce(std::begin(inputs), std::end(inputs), WeightedActivation{ 0.0L },
-            std::plus<>(), [](auto&& input) {
-            auto& [inputNeuron, inputNeuronWeight] = input;
+    std::plus<>(), [](auto&& input) {
+        auto& [inputNeuron, inputNeuronWeight] = input;
         return inputNeuron->getResponse() * inputNeuronWeight;
     });
     neuron.setResponse(Neuron::activationFunction(weightedActivation));

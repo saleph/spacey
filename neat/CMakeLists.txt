@@ -19,6 +19,7 @@ target_sources(neat
         "src/Neuron.hpp"
         "src/NetInput.hpp"
         "src/Net.hpp"
+        "src/NeuronInput.hpp"
 )
 target_link_libraries(neat Microsoft.GSL::GSL)
 target_link_libraries_system(neat Fruit::fruit)

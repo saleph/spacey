@@ -12,11 +12,15 @@ namespace spacey::neat {
 
 class Net {
 public:
+    Net() = delete;
+    Net(std::size_t inputSize, std::size_t outputSize);
+
+    auto addNeuron() -> Neuron&;
     auto getNetResponseFor(const std::vector<NetInput>& inputs) -> std::vector<Response>;
 
 private:
     using VisitedNeuronsMap = std::unordered_map<Neuron, bool>;
-    std::unordered_map<Neuron, ObservedNeuronList> neuronsInputs;
+    std::vector<std::unique_ptr<Neuron>> neurons;
     ObservedNeuronList netInputs;
     ObservedNeuronList netOutputs;
 
