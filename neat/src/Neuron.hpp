@@ -4,35 +4,44 @@
 #include <fruit/fruit.h>
 #include <gsl/gsl>
 #include <boost/functional/hash.hpp>
-#include "neat/src/Response.hpp"
-#include "neat/src/WeightedActivation.hpp"
-#include "neat/src/NeuronInput.hpp"
+#include <neat/src/Response.hpp>
+#include <neat/src/WeightedActivation.hpp>
+#include <neat/src/NeuronInput.hpp>
 
 namespace spacey::neat {
 class Neuron;
-using ObservedNeuronList = std::vector<Neuron*>;
+using ObservedNeuronList = std::vector<gsl::not_null<Neuron*>>;
 using NeuronInputs = std::vector<NeuronInput>;
+using NeuronList = std::vector<std::unique_ptr<Neuron>>;
 
 class Neuron {
     friend auto operator==(const Neuron& first, const Neuron& second) -> bool;
     friend std::hash<Neuron>;
 public:
-    static auto activationFunction(const WeightedActivation activation) -> Response;
+    static auto activationFunction(WeightedActivation activation) -> Response;
 
-    Neuron() = default;
-    explicit Neuron(NeuronInputs inputs);
+    explicit Neuron(const NeuronList& validNeuronInputs);
+    explicit Neuron(NeuronInputs inputs, const NeuronList& validNeuronInputs);
+    void verifyIfInputsContainNoneOf(const NeuronInputs& additionalInputs);
+    void verifyIfValidNeuronInputsContains(const NeuronInputs& additionalInputs);
+    Neuron(const Neuron& other) = delete;
+    Neuron(Neuron&& other) noexcept = default;
+    ~Neuron() = default;
+    auto operator=(const Neuron& other) -> Neuron& = delete;
+    auto operator=(Neuron&& other) -> Neuron & = default;
 
-    auto addInput(NeuronInput input) -> NeuronInput&;
+    void addInputs(const NeuronInputs& additionalInputs);
     [[nodiscard]] auto getInputs() const -> const NeuronInputs&;
     /// Assignment operator for batch processing of the Neurons
     /// during forward propagation
-    auto operator=(const Response response) noexcept -> Neuron&;
-    void setResponse(const Response response);
+    auto operator=(Response response) noexcept -> Neuron&;
+    void setResponse(Response response);
     [[nodiscard]] auto getResponse() const -> Response;
 
 private:
     NeuronInputs inputs{};
     Response response{ 0.0L };
+    const NeuronList& validNeuronInputs;
 };
 
 auto operator==(const Neuron& first, const Neuron& second) -> bool;

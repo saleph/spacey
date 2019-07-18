@@ -1,12 +1,12 @@
 #ifndef SPACEY_ACTIVATION_HPP
 #define SPACEY_ACTIVATION_HPP
 
-#include "common/include/FloatingPointUtils.hpp"
+#include <common/include/FloatingPointUtils.hpp>
 
 namespace spacey::neat {
 
 struct Activation {
-    double value;
+    long double value;
 };
 
 inline auto operator==(const Activation first, const Activation second) -> bool {

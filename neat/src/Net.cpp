@@ -1,24 +1,40 @@
-#include "neat/src/Net.hpp"
+#include <neat/src/Net.hpp>
 #include <algorithm>
 #include <numeric>
+#include <gsl/gsl>
 #include <boost/iterator/indirect_iterator.hpp>
-#include "neat/src/Neuron.hpp"
-#include "neat/src/Weight.hpp"
+#include <neat/src/Neuron.hpp>
+#include <neat/src/Weight.hpp>
 
 namespace spacey::neat {
 
-Net::Net(std::size_t inputSize, std::size_t outputSize) {
-    neurons.reserve(inputSize + outputSize);
-    netInputs.reserve(inputSize);
-    netOutputs.reserve(outputSize);
-    while(inputSize--) {
-        auto& neuron = neurons.emplace_back(std::make_unique<Neuron>());
+Net::Net(InputSize inputSize, OutputSize outputSize) {
+    Expects(inputSize.value >= 1);
+    Expects(outputSize.value >= 1);
+    neurons.reserve(inputSize.value + outputSize.value);
+    netInputs.reserve(inputSize.value);
+    netOutputs.reserve(outputSize.value);
+    while(inputSize.value--) {
+        auto& neuron = neurons.emplace_back(std::make_unique<Neuron>(neurons));
         netInputs.emplace_back(neuron.get());
     }
-    while (outputSize--) {
-        auto& neuron = neurons.emplace_back(std::make_unique<Neuron>());
+    while (outputSize.value--) {
+        auto& neuron = neurons.emplace_back(std::make_unique<Neuron>(neurons));
         netOutputs.emplace_back(neuron.get());
     }
+}
+
+auto Net::getNetInputs() const -> const ObservedNeuronList& {
+    return netInputs;
+}
+
+auto Net::getNetOutputs() const -> const ObservedNeuronList& {
+    return netOutputs;
+}
+
+auto Net::addNeuron() -> gsl::not_null<Neuron*> {
+    auto& neuron = neurons.emplace_back(std::make_unique<Neuron>(neurons));
+    return gsl::not_null{ neuron.get() };
 }
 
 auto Net::getNetResponseFor(const std::vector<NetInput>& inputs) -> std::vector<Response> {
@@ -33,7 +49,7 @@ auto Net::getNetResponseFor(const std::vector<NetInput>& inputs) -> std::vector<
     std::for_each(std::begin(netInputs), std::end(netInputs), [&visited](auto&& node) {
         // after setting the responses of the inputNodes, set them to be visited ones
         // this will stop the recursion
-        visited[*node] = true;
+        visited[node] = true;
     });
     std::for_each(std::begin(netOutputs), std::end(netOutputs), [this, &visited](auto&& node) {
         // propagate the input with DFS
@@ -50,8 +66,8 @@ void Net::calculateResponseFor(Neuron& neuron, VisitedNeuronsMap& visited) {
     auto&& inputs = neuron.getInputs();
     std::for_each(std::begin(inputs), std::end(inputs), [this, &visited](auto&& input) {
         auto& [inputNeuron, inputNeuronWeight] = input;
-        if (!visited[*inputNeuron]) {
-            visited[*inputNeuron] = true;
+        if (!visited[inputNeuron]) {
+            visited[inputNeuron] = true;
             calculateResponseFor(*inputNeuron, visited);
         }
     });

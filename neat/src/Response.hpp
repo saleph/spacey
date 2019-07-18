@@ -6,7 +6,7 @@
 namespace spacey::neat {
 
 struct Response {
-    double value;
+    long double value;
 };
 
 inline auto operator==(const Response first, const Response second) -> bool {

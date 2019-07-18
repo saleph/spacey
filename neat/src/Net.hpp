@@ -3,24 +3,33 @@
 
 #include <vector>
 #include <unordered_map>
-#include "neat/src/Activation.hpp"
-#include "neat/src/Response.hpp"
-#include "neat/src/Neuron.hpp"
-#include "neat/src/NetInput.hpp"
+#include <gsl/gsl>
+#include <neat/src/Response.hpp>
+#include <neat/src/Neuron.hpp>
+#include <neat/src/NetInput.hpp>
 
 namespace spacey::neat {
-
 class Net {
 public:
-    Net() = delete;
-    Net(std::size_t inputSize, std::size_t outputSize);
+    struct InputSize {
+        std::size_t value;
+    };
+    struct OutputSize {
+        std::size_t value;
+    };
 
-    auto addNeuron() -> Neuron&;
-    auto getNetResponseFor(const std::vector<NetInput>& inputs) -> std::vector<Response>;
+    Net() = delete;
+    explicit Net(InputSize inputSize, OutputSize outputSize);
+
+    [[nodiscard]] auto getNetInputs() const -> const ObservedNeuronList&;
+    [[nodiscard]] auto getNetOutputs() const -> const ObservedNeuronList&;
+    [[nodiscard]] auto addNeuron() -> gsl::not_null<Neuron*>;
+    
+    [[nodiscard]] auto getNetResponseFor(const std::vector<NetInput>& inputs) -> std::vector<Response>;
 
 private:
-    using VisitedNeuronsMap = std::unordered_map<Neuron, bool>;
-    std::vector<std::unique_ptr<Neuron>> neurons;
+    using VisitedNeuronsMap = std::unordered_map<Neuron*, bool>;
+    NeuronList neurons;
     ObservedNeuronList netInputs;
     ObservedNeuronList netOutputs;
 

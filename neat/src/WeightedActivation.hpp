@@ -6,7 +6,7 @@
 namespace spacey::neat {
 
 struct WeightedActivation {
-    double value;
+    long double value;
 
     auto operator+=(const WeightedActivation other) -> WeightedActivation& {
         value += other.value;

@@ -8,7 +8,7 @@
 namespace spacey::neat {
 
 struct Weight {
-    double value;
+    long double value;
 };
 
 inline auto operator==(const Weight first, const Weight second) -> bool {

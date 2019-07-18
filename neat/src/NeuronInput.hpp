@@ -15,7 +15,6 @@ struct NeuronInput {
 inline auto operator==(const NeuronInput first, const NeuronInput second) -> bool {
     return first.input == second.input && first.weight == second.weight;
 }
-
 // ReSharper disable once CppInconsistentNaming
 inline auto hash_value(const spacey::neat::NeuronInput input) {
     std::size_t seed = 0;

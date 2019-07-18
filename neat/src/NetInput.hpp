@@ -6,7 +6,7 @@
 namespace spacey::neat {
 
 struct NetInput {
-    double value;
+    long double value;
 };
 
 inline auto operator==(const NetInput first, const NetInput second) -> bool {

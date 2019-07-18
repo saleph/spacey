@@ -33,6 +33,7 @@ if (NOT SKIP_TEST_BUILD)
     target_sources(neat_test_lib
         PUBLIC
             "test/NeuronTest.cpp"
+            "test/NetTest.cpp"
     )
     target_link_libraries_system(neat_test_lib GMock::main)
     target_link_libraries(neat_test_lib Microsoft.GSL::GSL)
