@@ -2,7 +2,6 @@
 #include "neat/src/Neuron.hpp"
 
 namespace spacey::neat {
-std::atomic_size_t Neuron::neuronCounter = 0u;
 
 auto Neuron::activationFunction(const WeightedActivation activation) -> Response {
     return { tanh(activation.value) };
@@ -34,7 +33,7 @@ auto Neuron::getResponse() const -> Response {
 }
 
 auto operator==(const Neuron& first, const Neuron& second) -> bool {
-    return (&first == &second) || (first.id == second.id && first.response == second.response && first.inputs == second.inputs);
+    return (&first == &second) || (first.response == second.response && first.inputs == second.inputs);
 }
 
 auto operator!=(const Neuron& first, const Neuron& second) -> bool {

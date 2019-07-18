@@ -1,8 +1,6 @@
 #ifndef SPACEY_NEURON_HPP
 #define SPACEY_NEURON_HPP
 
-#include <functional>
-#include <atomic>
 #include <fruit/fruit.h>
 #include <gsl/gsl>
 #include <boost/functional/hash.hpp>
@@ -18,7 +16,6 @@ using NeuronInputs = std::vector<NeuronInput>;
 class Neuron {
     friend auto operator==(const Neuron& first, const Neuron& second) -> bool;
     friend std::hash<Neuron>;
-    static std::atomic_size_t neuronCounter;
 public:
     static auto activationFunction(const WeightedActivation activation) -> Response;
 
@@ -34,7 +31,6 @@ public:
     [[nodiscard]] auto getResponse() const -> Response;
 
 private:
-    const std::size_t id = ++neuronCounter;
     NeuronInputs inputs{};
     Response response{ 0.0L };
 };
@@ -48,9 +44,11 @@ template <>
 struct hash<spacey::neat::Neuron> {
     auto operator()(const spacey::neat::Neuron& n) const noexcept -> size_t {
         size_t seed = 0;
-        boost::hash_combine(seed, n.id);
         boost::hash_combine(seed, n.response.value);
-        boost::hash_combine(seed, &n.inputs);
+        std::for_each(std::begin(n.inputs), std::end(n.inputs), [&seed](auto&& input) {
+            boost::hash_combine(seed, input);
+        });
+        boost::hash_combine(seed, n.inputs);
         return seed;
     }
 };

@@ -13,22 +13,29 @@ public:
     }
 
     Weight defaultWeight{ 1.0L };
+    Response nonDefaultResponse{ 22.33L };
 };
 
-TEST_F(NeuronTestFixture, shouldTwoNeuronsInSameStateBeDifferent) {
+TEST_F(NeuronTestFixture, shouldTwoNeuronsInSameStateBeTheSame) {
     const auto firstNeuron = Neuron{};
     const auto secondNeuron = Neuron{};
-    ASSERT_TRUE(firstNeuron != secondNeuron)
-            << "Neuron in the same state should not be treated as equals";
+    ASSERT_TRUE(firstNeuron == secondNeuron);
+}
+
+TEST_F(NeuronTestFixture, shouldNeuronBeAbleToHoldReferenceToItsInputNeuron) {
+    auto neuron = Neuron{};
+    auto inputNeuron = Neuron{};
+    const auto input = NeuronInput{ &inputNeuron, defaultWeight };
+    neuron.addInput(input);
+    inputNeuron.setResponse({ nonDefaultResponse });
+    ASSERT_THAT(neuron.getInputs(), UnorderedElementsAre(input));
 }
 
 TEST_F(NeuronTestFixture, shouldNeuronBeAbleToHoldItselfInInputList) {
     auto neuron = Neuron{};
     const auto input = NeuronInput{ &neuron, defaultWeight };
-    neuron.addInput(input);
-    ASSERT_THAT(neuron.getInputs(),
-                UnorderedElementsAre(input))
-            << "Neuron should be able to hold ref to itself in inputs";
+    ASSERT_NO_THROW(neuron.addInput(input));
+    ASSERT_THAT(neuron.getInputs(), UnorderedElementsAre(input));
 }
 
 }
