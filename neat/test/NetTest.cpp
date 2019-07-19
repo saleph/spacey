@@ -18,6 +18,8 @@ public:
     const std::size_t defaultOutputSize{ 6 };
     Net net{ Net::InputSize{defaultInputSize}, Net::OutputSize{defaultOutputSize} };
     const Weight defaultWeight{ 1.0L };
+    const Weight noScaling{ defaultWeight };
+    const long double inputValue = 10.0L;
 };
 
 TEST_F(NetTestFixture, shouldThrowWhenInputSizeIsZero) {
@@ -44,10 +46,11 @@ TEST_F(NetTestFixture, shouldOutputDirectlyConnectedToInputWithoutScallingReturn
     auto net = Net{ Net::InputSize{ 1 }, Net::OutputSize{ 1 } };
     const auto input = net.getNetInputs().front();
     auto output = net.getNetOutputs().front();
-    const auto noScaling = Weight{ 1.0L };
     output->addInputs({ NeuronInput{input, noScaling} });
-    const auto inputValue = 10.0L;
-    ASSERT_THAT(net.getNetResponseFor({ NetInput{inputValue} }), UnorderedElementsAre(Response{ inputValue }));
+
+    const auto inputResponse = Neuron::activationFunction({ inputValue });
+    const auto expectedOutput = Neuron::activationFunction(inputResponse * noScaling);
+    ASSERT_THAT(net.getNetResponseFor({ NetInput{inputValue} }), UnorderedElementsAre(expectedOutput));
 }
 
 TEST_F(NetTestFixture, a) {
