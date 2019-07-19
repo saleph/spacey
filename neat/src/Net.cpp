@@ -14,7 +14,7 @@ Net::Net(InputSize inputSize, OutputSize outputSize) {
     neurons.reserve(inputSize.value + outputSize.value);
     netInputs.reserve(inputSize.value);
     netOutputs.reserve(outputSize.value);
-    while(inputSize.value--) {
+    while (inputSize.value--) {
         auto& neuron = neurons.emplace_back(std::make_unique<Neuron>(neurons));
         netInputs.emplace_back(neuron.get());
     }

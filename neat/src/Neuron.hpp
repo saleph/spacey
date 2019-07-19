@@ -28,7 +28,7 @@ public:
     Neuron(Neuron&& other) noexcept = default;
     ~Neuron() = default;
     auto operator=(const Neuron& other) -> Neuron& = delete;
-    auto operator=(Neuron&& other) -> Neuron & = default;
+    auto operator=(Neuron&& other) -> Neuron& = default;
 
     void addInputs(const NeuronInputs& additionalInputs);
     [[nodiscard]] auto getInputs() const -> const NeuronInputs&;

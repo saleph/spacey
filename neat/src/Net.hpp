@@ -24,7 +24,7 @@ public:
     [[nodiscard]] auto getNetInputs() const -> const ObservedNeuronList&;
     [[nodiscard]] auto getNetOutputs() const -> const ObservedNeuronList&;
     [[nodiscard]] auto addNeuron() -> gsl::not_null<Neuron*>;
-    
+
     [[nodiscard]] auto getNetResponseFor(const std::vector<NetInput>& inputs) -> std::vector<Response>;
 
 private:

@@ -8,7 +8,7 @@ auto Neuron::activationFunction(const WeightedActivation activation) -> Response
     return { tanh(activation.value) };
 }
 
-Neuron::Neuron(const NeuronList& validNeuronInputs) 
+Neuron::Neuron(const NeuronList& validNeuronInputs)
     : validNeuronInputs{ validNeuronInputs } {
 }
 
