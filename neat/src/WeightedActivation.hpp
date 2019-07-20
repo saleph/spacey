@@ -22,7 +22,7 @@ inline auto operator+(const WeightedActivation first, const WeightedActivation s
     return { first.value + second.value };
 }
 
-inline auto operator<<(std::ostream& os, const WeightedActivation response) -> std::ostream & {
+inline auto operator<<(std::ostream& os, const WeightedActivation response) -> std::ostream& {
     os << response.value;
     return os;
 }

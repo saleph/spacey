@@ -33,7 +33,11 @@ private:
     ObservedNeuronList netInputs;
     ObservedNeuronList netOutputs;
 
+    void insertNetInputValues(const std::vector<NetActivation>& inputs);
+    void markNetInputsAsVisited(VisitedNeuronsMap& visited);
+    void propagateNetInputs(VisitedNeuronsMap& visited);
     void calculateResponseFor(Neuron& neuron, VisitedNeuronsMap& visited);
+    [[nodiscard]] auto gatherOutputsResponses() -> std::vector<Response>;
 };
 
 }

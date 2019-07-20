@@ -60,17 +60,17 @@ TEST_F(ForwardPropagationTestFixture, shouldResponseFor1to1to1RecurrentNetForVar
     hidden->addInputs({ NeuronInput{ output, hiddenFromOutput } });
 
     const auto firstInputResponse = Neuron::activationFunction(
-        netActivation * noScaling);
+                                        netActivation * noScaling);
     const auto outputResponseAtTheStart = Response{ 0.0L };
     const auto firstHiddenResponse = Neuron::activationFunction(
-        firstInputResponse * hiddenFromInput + outputResponseAtTheStart * hiddenFromOutput);
+                                         firstInputResponse * hiddenFromInput + outputResponseAtTheStart * hiddenFromOutput);
     const auto firstOutputResponse = Neuron::activationFunction(
-        firstHiddenResponse * outputFromHidden);
+                                         firstHiddenResponse * outputFromHidden);
     ASSERT_THAT(net.getNetResponseFor({ netActivation }), UnorderedElementsAre(firstOutputResponse));
 
     const auto secondInputResponse = firstInputResponse; // same netActivation
     const auto secondHiddenResponse = Neuron::activationFunction(
-        secondInputResponse * hiddenFromInput + firstOutputResponse * hiddenFromOutput);
+                                          secondInputResponse * hiddenFromInput + firstOutputResponse * hiddenFromOutput);
     const auto secondExpectedOutput = Neuron::activationFunction(secondHiddenResponse * outputFromHidden);
     ASSERT_THAT(net.getNetResponseFor({ NetActivation{inputValue} }), UnorderedElementsAre(secondExpectedOutput));
 }

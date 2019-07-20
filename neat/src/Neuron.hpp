@@ -16,7 +16,7 @@ using NeuronList = std::vector<std::unique_ptr<Neuron>>;
 
 class Neuron {
     friend auto operator==(const Neuron& first, const Neuron& second) -> bool;
-    friend std::hash<Neuron>;
+    //friend std::hash<Neuron>;
 public:
     static auto activationFunction(WeightedActivation activation) -> Response;
 
@@ -50,19 +50,19 @@ auto operator==(const Neuron& first, const Neuron& second) -> bool;
 auto operator!=(const Neuron& first, const Neuron& second) -> bool;
 } // namespace spacey::neat
 
-namespace std {  // NOLINT(cert-dcl58-cpp) standard hash injection
-template <>
-struct hash<spacey::neat::Neuron> {
-    auto operator()(const spacey::neat::Neuron& n) const noexcept -> size_t {
-        size_t seed = 0;
-        boost::hash_combine(seed, n.response.value);
-        std::for_each(std::begin(n.inputs), std::end(n.inputs), [&seed](auto&& input) {
-            boost::hash_combine(seed, input);
-        });
-        boost::hash_combine(seed, n.inputs);
-        return seed;
-    }
-};
-}
+//namespace std {  // NOLINT(cert-dcl58-cpp) standard hash injection
+//template <>
+//struct hash<spacey::neat::Neuron> {
+//    auto operator()(const spacey::neat::Neuron& n) const noexcept -> size_t {
+//        size_t seed = 0;
+//        boost::hash_combine(seed, n.response.value);
+//        std::for_each(std::begin(n.inputs), std::end(n.inputs), [&seed](auto&& input) {
+//            boost::hash_combine(seed, input);
+//        });
+//        boost::hash_combine(seed, n.inputs);
+//        return seed;
+//    }
+//};
+//}
 
 #endif //SPACEY_NEURON_HPP

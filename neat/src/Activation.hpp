@@ -13,7 +13,7 @@ inline auto operator==(const Activation first, const Activation second) -> bool 
     return common::areFloatingPointEquals(first.value, second.value);
 }
 
-inline auto operator<<(std::ostream& os, const Activation response) -> std::ostream & {
+inline auto operator<<(std::ostream& os, const Activation response) -> std::ostream& {
     os << response.value;
     return os;
 }

@@ -38,30 +38,50 @@ auto Net::addNeuron() -> gsl::not_null<Neuron*> {
     return gsl::not_null{ neuron.get() };
 }
 
-auto Net::getNetResponseFor(const std::vector<NetActivation>& inputs) -> std::vector<Response> {
-    Expects(inputs.size() == netInputs.size());
-    std::transform(std::begin(inputs), std::end(inputs),
-                   boost::indirect_iterator<ObservedNeuronList::iterator, Neuron>(netInputs.begin()),
-    [](auto&& input) {
-        // no scaling of the input
-        const auto inputWeight = Weight{ 1.0L };
-        return Neuron::activationFunction(input * inputWeight);
-    });
-    VisitedNeuronsMap visited;
-    std::for_each(std::begin(netInputs), std::end(netInputs), [&visited](auto&& node) {
-        // after setting the responses of the inputNodes, set them to be visited ones
-        // this will stop the recursion
-        visited[node] = true;
-    });
-    std::for_each(std::begin(netOutputs), std::end(netOutputs), [this, &visited](auto&& node) {
-        // propagate the input with DFS
-        calculateResponseFor(*node, visited);
-    });
+std::vector<Response> Net::gatherOutputsResponses() {
     std::vector<Response> responses;
     std::transform(std::begin(netOutputs), std::end(netOutputs), std::back_inserter(responses), [](auto&& node) {
         return node->getResponse();
     });
     return responses;
+}
+
+auto Net::getNetResponseFor(const std::vector<NetActivation>& inputs) -> std::vector<Response> {
+    Expects(inputs.size() == netInputs.size());
+    insertNetInputValues(inputs);
+    auto visited = VisitedNeuronsMap{};
+    markNetInputsAsVisited(visited);
+    propagateNetInputs(visited);
+    auto responses = gatherOutputsResponses();
+    Ensures(responses.size() == netOutputs.size());
+    return responses;
+}
+
+void Net::insertNetInputValues(const std::vector<NetActivation>& inputs) {
+    const auto indirectNetInputs =
+        boost::indirect_iterator<ObservedNeuronList::iterator, Neuron>(netInputs.begin());
+    // false positive with indirect_iterator
+#pragma warning(suppress : 26444)
+    std::transform(std::begin(inputs), std::end(inputs), indirectNetInputs, [](auto&& input) {
+        // no scaling of the input
+        const auto inputWeight = Weight{ 1.0L };
+        return Neuron::activationFunction(input * inputWeight);
+    });
+}
+
+void Net::markNetInputsAsVisited(Net::VisitedNeuronsMap& visited) {
+    std::for_each(std::begin(netInputs), std::end(netInputs), [&visited](auto&& node) {
+        // after setting the responses of the inputNodes, set them to be visited ones
+        // this will stop the recursion
+        visited[node] = true;
+    });
+}
+
+void Net::propagateNetInputs(Net::VisitedNeuronsMap& visited) {
+    std::for_each(std::begin(netOutputs), std::end(netOutputs), [this, &visited](auto&& node) {
+        // propagate the input with DFS
+        calculateResponseFor(*node, visited);
+    });
 }
 
 void Net::calculateResponseFor(Neuron& neuron, VisitedNeuronsMap& visited) {
@@ -76,8 +96,8 @@ void Net::calculateResponseFor(Neuron& neuron, VisitedNeuronsMap& visited) {
     // note: input.response may be read for nodes that are marked visited, but not
     // calculated yet. That's normal, it's just a cycle in the network, it will
     // behave like a recurrent neuron (it will use value from previous evaluation)
-    const auto weightedActivation = std::transform_reduce(std::begin(inputs), std::end(inputs), WeightedActivation{ 0.0L },
-    std::plus<>(), [](auto&& input) {
+    const auto weightedActivation = std::transform_reduce(std::begin(inputs), std::end(inputs),
+    WeightedActivation{ 0.0L }, std::plus<>(), [](auto&& input) {
         auto& [inputNeuron, inputNeuronWeight] = input;
         return inputNeuron->getResponse() * inputNeuronWeight;
     });
