@@ -5,6 +5,7 @@
 #include <boost/iterator/indirect_iterator.hpp>
 #include <neat/src/Neuron.hpp>
 #include <neat/src/Weight.hpp>
+#include <neat/src/NetInputNeuron.hpp>
 
 namespace spacey::neat {
 
@@ -15,7 +16,7 @@ Net::Net(InputSize inputSize, OutputSize outputSize) {
     netInputs.reserve(inputSize.value);
     netOutputs.reserve(outputSize.value);
     while (inputSize.value--) {
-        auto& neuron = neurons.emplace_back(std::make_unique<Neuron>(neurons));
+        auto& neuron = neurons.emplace_back(std::make_unique<NetInputNeuron>(neurons));
         netInputs.emplace_back(neuron.get());
     }
     while (outputSize.value--) {
@@ -37,7 +38,8 @@ auto Net::addNeuron() -> gsl::not_null<Neuron*> {
     return gsl::not_null{ neuron.get() };
 }
 
-auto Net::getNetResponseFor(const std::vector<NetInput>& inputs) -> std::vector<Response> {
+auto Net::getNetResponseFor(const std::vector<NetActivation>& inputs) -> std::vector<Response> {
+    Expects(inputs.size() == netInputs.size());
     std::transform(std::begin(inputs), std::end(inputs),
                    boost::indirect_iterator<ObservedNeuronList::iterator, Neuron>(netInputs.begin()),
     [](auto&& input) {

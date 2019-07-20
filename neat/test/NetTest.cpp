@@ -6,7 +6,6 @@
 
 namespace spacey::neat {
 using ::testing::UnorderedElementsAre;
-using ::testing::UnorderedElementsAreArray;
 
 class NetTestFixture : public ::testing::Test {
 public:
@@ -40,20 +39,5 @@ TEST_F(NetTestFixture, shouldNetInputsSizeMatchDeclaredOneDuringConstruction) {
 
 TEST_F(NetTestFixture, shouldNetOutputsSizeMatchDeclaredOneDuringConstruction) {
     ASSERT_EQ(net.getNetOutputs().size(), defaultOutputSize);
-}
-
-TEST_F(NetTestFixture, shouldOutputDirectlyConnectedToInputWithoutScallingReturnSameValueAsResponse) {
-    auto net = Net{ Net::InputSize{ 1 }, Net::OutputSize{ 1 } };
-    const auto input = net.getNetInputs().front();
-    auto output = net.getNetOutputs().front();
-    output->addInputs({ NeuronInput{input, noScaling} });
-
-    const auto inputResponse = Neuron::activationFunction({ inputValue });
-    const auto expectedOutput = Neuron::activationFunction(inputResponse * noScaling);
-    ASSERT_THAT(net.getNetResponseFor({ NetInput{inputValue} }), UnorderedElementsAre(expectedOutput));
-}
-
-TEST_F(NetTestFixture, a) {
-
 }
 }

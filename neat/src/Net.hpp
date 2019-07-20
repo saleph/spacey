@@ -6,7 +6,7 @@
 #include <gsl/gsl>
 #include <neat/src/Response.hpp>
 #include <neat/src/Neuron.hpp>
-#include <neat/src/NetInput.hpp>
+#include <neat/src/NetActivation.hpp>
 
 namespace spacey::neat {
 class Net {
@@ -25,7 +25,7 @@ public:
     [[nodiscard]] auto getNetOutputs() const -> const ObservedNeuronList&;
     [[nodiscard]] auto addNeuron() -> gsl::not_null<Neuron*>;
 
-    [[nodiscard]] auto getNetResponseFor(const std::vector<NetInput>& inputs) -> std::vector<Response>;
+    [[nodiscard]] auto getNetResponseFor(const std::vector<NetActivation>& inputs) -> std::vector<Response>;
 
 private:
     using VisitedNeuronsMap = std::unordered_map<Neuron*, bool>;

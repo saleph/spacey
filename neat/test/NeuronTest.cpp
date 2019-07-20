@@ -2,6 +2,7 @@
 #include <gmock/gmock.h>
 #include <gsl/gsl>
 #include <neat/src/Neuron.hpp>
+#include "neat/src/NetInputNeuron.hpp"
 
 namespace spacey::neat {
 using ::testing::UnorderedElementsAre;
@@ -15,6 +16,11 @@ public:
 
     auto getRegisteredNeuron() -> Neuron& {
         auto& neuron = validNeurons.emplace_back(std::make_unique<Neuron>(validNeurons));
+        return *neuron;
+    }
+
+    auto getRegisteredNetInputNeuron() -> Neuron& {
+        auto& neuron = validNeurons.emplace_back(std::make_unique<NetInputNeuron>(validNeurons));
         return *neuron;
     }
 
@@ -57,6 +63,12 @@ TEST_F(NeuronTestFixture, shouldThrowWhenAddingInputThatAlreadyExists) {
     const auto input = NeuronInput{ &neuron, defaultWeight };
     ASSERT_NO_THROW(neuron.addInputs({ input }));
     ASSERT_THROW(neuron.addInputs({ input }), gsl::fail_fast);
+}
+
+TEST_F(NeuronTestFixture, shouldThrowWhenAddingInputToNetInputNeuron) {
+    auto& neuron = getRegisteredNetInputNeuron();
+    const auto input = NeuronInput{ &neuron, defaultWeight };
+    ASSERT_THROW(neuron.addInputs({ input }), std::logic_error);
 }
 
 }

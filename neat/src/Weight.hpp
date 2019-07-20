@@ -19,6 +19,11 @@ inline auto operator*(const Response response, const Weight weight) -> WeightedA
     return { response.value * weight.value };
 }
 
+inline auto operator<<(std::ostream& os, const Weight response) -> std::ostream & {
+    os << response.value;
+    return os;
+}
+
 }
 
 #endif //SPACEY_WEIGHT_HPP

@@ -26,11 +26,11 @@ public:
     void verifyIfValidNeuronInputsContains(const NeuronInputs& additionalInputs);
     Neuron(const Neuron& other) = delete;
     Neuron(Neuron&& other) noexcept = default;
-    ~Neuron() = default;
+    virtual ~Neuron() = default;
     auto operator=(const Neuron& other) -> Neuron& = delete;
     auto operator=(Neuron&& other) -> Neuron& = default;
 
-    void addInputs(const NeuronInputs& additionalInputs);
+    virtual void addInputs(const NeuronInputs& additionalInputs);
     [[nodiscard]] auto getInputs() const -> const NeuronInputs&;
     /// Assignment operator for batch processing of the Neurons
     /// during forward propagation
@@ -38,8 +38,10 @@ public:
     void setResponse(Response response);
     [[nodiscard]] auto getResponse() const -> Response;
 
-private:
+protected:
     NeuronInputs inputs{};
+
+private:
     Response response{ 0.0L };
     const NeuronList& validNeuronInputs;
 };
