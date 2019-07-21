@@ -412,12 +412,12 @@ matrix:
       - make test
 
   #
-  # XCode 8.3
+  # XCode 10.2.1
   #
   - os: osx
     env:
-      - TEST="XCode 8.3"
-    osx_image: xcode8.3
+      - TEST="XCode 10.2.1"
+    osx_image: xcode10.2.1
     script:
       - |
         cmake ..

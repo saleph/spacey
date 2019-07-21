@@ -40,7 +40,7 @@ TEST_F(NeuronTestFixture, shouldNeuronBeAbleToHoldReferenceToItsInputNeuron) {
     auto& inputNeuron = getRegisteredNeuron();
     const auto input = NeuronInput{ &inputNeuron, defaultWeight };
     neuron.addInputs({ input });
-    inputNeuron.setResponse({ nonDefaultResponse });
+    inputNeuron.setResponse(nonDefaultResponse);
     ASSERT_THAT(neuron.getInputs(), UnorderedElementsAre(input));
 }
 
