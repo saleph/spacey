@@ -110,11 +110,7 @@ if(ENABLE_CPPCHECK)
         --language=c++
         -DMAIN=main
         -I ${CMAKE_SOURCE_DIR}/*/include
-        ${CMAKE_SOURCE_DIR}/*/include/*.hpp
-        ${CMAKE_SOURCE_DIR}/*/src/*.hpp
         ${CMAKE_SOURCE_DIR}/*/src/*.cpp
-        ${CMAKE_SOURCE_DIR}/*/test/*.cpp
-        ${CMAKE_SOURCE_DIR}/*/test/*.hpp
         ${CMAKE_SOURCE_DIR}/*.cpp
     )
     add_custom_target(
