@@ -61,10 +61,13 @@ Install the following packages:
   - Check "Desktop development with C++"
   - Check "C++ CLI / Support"
   - Check "Standard Library Modules"
+
 - [CMake v3.13+](https://cmake.org/download/)
 - [Git for Windows](https://github.com/git-for-windows/git/releases)
 
 #### macOS:
+
+Install the following packages:
 - [XCode 10.0.0+](https://developer.apple.com/xcode/)
 - [CMake v3.13+](https://cmake.org/download/)
 
