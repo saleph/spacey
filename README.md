@@ -1,22 +1,26 @@
-[![GitHub version](https://badge.fury.io/gh/ainfosec%2Fci_helloworld.svg)](https://badge.fury.io/gh/ainfosec%2Fci_helloworld)
-[![Build Status](https://travis-ci.org/ainfosec/ci_helloworld.svg?branch=master)](https://travis-ci.org/ainfosec/ci_helloworld)
-[![Build status](https://ci.appveyor.com/api/projects/status/b8ceqhe5n1884ek5/branch/master?svg=true)](https://ci.appveyor.com/project/rianquinn/ci-helloworld/branch/master)
-[![codecov](https://codecov.io/gh/ainfosec/ci_helloworld/branch/master/graph/badge.svg)](https://codecov.io/gh/ainfosec/ci_helloworld)
-[![Coverage Status](https://coveralls.io/repos/github/ainfosec/ci_helloworld/badge.svg?branch=master)](https://coveralls.io/github/ainfosec/ci_helloworld?branch=master)
-<a href="https://scan.coverity.com/projects/ainfosec-ci_helloworld">
+[![GitHub version](https://badge.fury.io/gh/saleph%2Fspacey.svg)](https://badge.fury.io/gh/saleph%2Fspacey)
+[![Build Status](https://travis-ci.org/saleph/spacey.svg?branch=master)](https://travis-ci.org/saleph/spacey)
+[![Build status](https://ci.appveyor.com/api/projects/status/xxrbof97oa7h5ala/branch/master?svg=true)](https://ci.appveyor.com/project/saleph/spacey/branch/master)
+[![codecov](https://codecov.io/gh/saleph/spacey/branch/master/graph/badge.svg)](https://codecov.io/gh/saleph/spacey)
+[![Coverage Status](https://coveralls.io/repos/github/saleph/spacey/badge.svg?branch=master)](https://coveralls.io/github/saleph/spacey?branch=master)
+<a href="https://scan.coverity.com/projects/saleph-spacey">
   <img alt="Coverity Scan Build Status"
-       src="https://img.shields.io/coverity/scan/12883.svg"/>
+       src="https://scan.coverity.com/projects/18615/badge.svg"/>
 </a>
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8e0fdf1c93ab47f1ab3bbe5777f747ba)](https://www.codacy.com/app/rianquinn/ci_helloworld?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ainfosec/ci_helloworld&amp;utm_campaign=Badge_Grade)
-[![Join the chat at https://gitter.im/ci_helloworld/Lobby](https://badges.gitter.im/ci_helloworld/Lobby.svg)](https://gitter.im/ci_helloworld/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1bc5a5252cdd4926894a3f615fece632)](https://www.codacy.com/app/saleph/spacey?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=saleph/spacey&amp;utm_campaign=Badge_Grade)
 
 ## Description
 
-This repo provides a simple example for how to setup various CI services as
-well as integrating analysis tools into these services. These tools should be
-used as part of a comprehensive Software Development Process (SDP) and can also
-be used as a starting template for any C or C++ application. The following CI
-tools are used, providing testing support for Windows, Cygwin, Linux and macOS
+Multidimensional spaceships controlled via evolving neural netowrks (NEAT).
+
+Whole build-pipe is designed to work with most recent compilers and tools. C++17 is almost fully supported here, many features from C++20 is available.
+
+Almost no additional configuration is needed. All 3rd party dependencies (if possible) are handled by [Hunter](https://github.com/ruslo/hunter). If not, then cmake's ExternalProject_add is used.
+
+Clone, install compiler and cmake, build and run!
+
+## Technicals about the project
+The project is build by:
 
 - [Travis CI](https://travis-ci.org/)
 - [AppVeyor](https://www.appveyor.com/)
@@ -39,30 +43,17 @@ The following checks are performed:
 - [XCode Compiler Tests](https://developer.apple.com/xcode/)
 - [Visual Studio Compiler Tests](https://www.visualstudio.com/)
 
-The following real world projects use a variety of these techniques as part
-of their SDP:
-
-- [Bareflank Hypervisor](https://github.com/Bareflank/hypervisor)
-- [JSON](https://github.com/nlohmann/json)
-- [Neovim](https://github.com/neovim/neovim)
-- [GSL](https://github.com/Microsoft/GSL)
-
 ## Dependencies
 
-Although this repo can be made to run on most systems, the following are the
-supported platforms and their dependencies:
+Supported configurations:
 
-#### Ubuntu 16.10 (or Higher):
+### Ubuntu 16.10 (or Higher)
+```bash
+sudo apt-get install git build-essential gcc-9 g++-9
 ```
-sudo apt-get install git build-essential cmake
-```
+Additionally you have to install one of the most recent cmake versions (v3.13+) from [CMake v3.13+](https://cmake.org/download/).
 
-#### Windows (Cygwin):
-```
-setup-x86_64.exe -q -P git,make,gcc-core,gcc-g++,cmake
-```
-
-#### Windows (Visual Studio):
+### Windows (Visual Studio)
 
 Install the following packages:
 - [Visual Studio SDK 10](https://go.microsoft.com/fwlink/?linkid=838916)
@@ -70,70 +61,56 @@ Install the following packages:
   - Check "Desktop development with C++"
   - Check "C++ CLI / Support"
   - Check "Standard Library Modules"
-- [CMake v3.6+](https://cmake.org/download/)
+
+- [CMake v3.13+](https://cmake.org/download/)
 - [Git for Windows](https://github.com/git-for-windows/git/releases)
 
-#### macOS:
-- [XCode 7.3+](https://developer.apple.com/xcode/)
-- [CMake v3.6+](https://cmake.org/download/)
+### macOS
+
+Install the following packages:
+- [XCode 10.0.0+](https://developer.apple.com/xcode/)
+- [CMake v3.13+](https://cmake.org/download/)
 
 ## Compilation / Testing / Installation
 
 To compile and install this example, use the following instructions:
 
-#### GCC / Clang
-```
-git clone https://github.com/ainfosec/ci_helloworld.git
+### GCC / Clang
+```bash
+git clone https://github.com/saleph/spacey.git
 
-mkdir ci_helloworld/build
-cd ci_helloworld/build
-
+mkdir spacey/build
+cd spacey/build
 cmake ..
-
 make
 make test
 ```
 
-#### Visual Studio 2017 (NMake)
-```
-git clone https://github.com/ainfosec/ci_helloworld.git
+### Visual Studio 2019 (MSBuild)
+```bash
+git clone https://github.com/saleph/spacey.git
 
-mkdir ci_helloworld/build
-cd ci_helloworld/build
-
-cmake -G "NMake Makefiles" ..
-
-nmake
-nmake test
-```
-
-#### Visual Studio 2017 (MSBuild)
-```
-git clone https://github.com/ainfosec/ci_helloworld.git
-
-mkdir ci_helloworld/build
-cd ci_helloworld/build
-
+mkdir spacey/build
+cd spacey/build
 cmake -G "Visual Studio 16 2019" -A x64 ..
-
-msbuild ci_helloworld.sln
+msbuild spacey.sln
 ctest
 ```
 
-#### XCode 7.3+
-```
-git clone https://github.com/ainfosec/ci_helloworld.git
+### XCode 10.0.0+
+```bash
+git clone https://github.com/saleph/spacey.git
 
-mkdir ci_helloworld/build
-cd ci_helloworld/build
-
+mkdir spacey/build
+cd spacey/build
 cmake ..
-
 make
 make test
 ```
 
 ## Analysis Tools
+<details>
+  <summary>Details about analysis tools</summary>
 
 The following provides a description of all of the analysis tools that have
 been integrated into the CI services used by this project including an
@@ -591,13 +568,15 @@ Valgrind to exit with a non-0 exit code so that if a check fails, Travis CI
 will fail the test.
 
 ```yml
-- cmake -DCMAKE_CXX_COMPILER="g++-6" ..
+- cmake -DCMAKE_CXX_COMPILER="g++-9" ..
 - make
 - ctest -T memcheck
 ```
 
 To run the test, all we need to do is compile the code, and run the unit tests
 using ctest, enabling the memcheck mode.
+
+</details>
 
 ## License
 

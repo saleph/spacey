@@ -39,9 +39,12 @@ cache:
 #
 env:
   global:
-    secure: "TgRM9CGlY1bAVGOQ9KJ35P5tTCu16aOm4Tf9BW24bwwUmBFawz1sQGOUyJq30OzivtMfLTVi9TfObH2kq5uUFnakX6PkCVwxOZLZPO4yKcum2flTnzX5iZsqGxZb0vDT49QQWvJi1HbKsro5ciEuWVXtV66AX6wetS+fp8A4g+ToQkusr1s5ugYq5yc3HKFcwrlNSPdyn7FETQrrFr8kgO/LiBLMRBpEO1zo9s23h4MjSsBr2u9AvE2QJ2C88Vu5yTI8TWNQY9nZV3c5lgwSUXk+y+IZQTmW0LXALglNKbCRftxgjJM6zypw0h9iXSGc+3rVkuVwQfOrFdxyAOr2jBiKbFYB3mxNNc10XZtvRnwn+eEcsXwQ4Hi9jhqN13LciZcoJpKnL9fQp3dUeBehYkCyUQnK6oRxS/ceYQJB05y9IpZq/XnjIL9uXIie7kYtRMNVwVgLmr+cMt5QvJgkiLAhAhLjwhmEt7KX+UQ4x4jDxMJ8NV0azEG4nFr6HvTWHc9PgPjM83HxX+7CGAZy5da6zmZe+FOTlG6lOwCDROqDmmlGPR9e7hZ+JtaMHRZlCN90jiJ7Shszrnwmjv0CJ0WHbCSGreRl00039GuwPNRvqgsgYxrVfYQ0Z6CbA9E1qlluwV02KWJdMk1pcm//KdgMzsleiD4N3MQ/W6Ol2Zs="
+   - secure: "kZvyN+SKlPa38/rnue/M4ft/lf1jzD5Y7Oy5jqmt7f4L1QEM4WSSyI7rnYxgMGQLrsdxlntEQIm1iwDt7JRQFsqok2oqr45GkZrTP9pj7fh07rKmmONm9mQdjD47zIVhR4Kt/0Feyk9RV1w0lNACb6Az+LaAcUXN9Mxrs56ExCcFKT1vnH1gCHyLPIPojfxGdaPBQuCXmOdJdEFRwG+jBmQWyHh0ezgmODtUW05FzqqGZF+xJSwW/bbvQsCIK+ugSnDppwWHtU4uqVpZwPkjj9dARaPEv+scpRlyvSpqOzybgGS6NtuLq49g0vlZkplX8znlzFMbZQ+fNP/zUtQWYX3X9hfU/bW+7yVHOmtCZi+2LE3vipatybytAt/caMqddPgOfR4xpbn31N3wuyx+e8VcGEYc20dQTshrZeCv24entE/g8k7gJKeSJKSoK9EBh9upGAWF27PNdtRTv6GoxSq5UbAJ2tXz+wbkAr8VZt3PeZkhH9sB6nC+TeDf5M1ZX3h7u6ykMY1i9nG9MfvaKJC1zTZ1YkoZco0DvB8RIU5nBOcEPuX2JnECrTvEWToPggntyG5Nuq7bW8kYxRt3o/Vxlw4/2ZRT1ax1N+uuvZ/8aannTuVn1XfifKO3p3KYvX5TSQ3OAODFSB1LFPZbZQT6PNhoed4sGDvnhEdoZyU="
 
-#
+before_install:
+  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+
+   #
 # Build Dependencies
 #
 before_script:
@@ -412,12 +415,12 @@ matrix:
       - make test
 
   #
-  # XCode 8.3
+  # XCode 10.2.1
   #
   - os: osx
     env:
-      - TEST="XCode 8.3"
-    osx_image: xcode8.3
+      - TEST="XCode 10.2.1"
+    osx_image: xcode10.2.1
     script:
       - |
         cmake ..

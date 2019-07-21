@@ -52,12 +52,16 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 cmake_policy(SET CMP0079 NEW)
 # clang-tidy does not like GTest, produces a lot of warnings, treated as errors
 set(SKIP_TEST_BUILD ${ENABLE_CLANG_TIDY})
+# setup GSL to throw on contract violations in exchange for termination
+add_compile_definitions(GSL_THROW_ON_CONTRACT_VIOLATION)
 
 # ------------------------------------------------------------------------------
 # Hunter libraries in use
 # ------------------------------------------------------------------------------
 hunter_add_package(GTest)
 hunter_add_package(Microsoft.GSL)
+hunter_add_package(Fruit)
+hunter_add_package(Boost)
 
 # ------------------------------------------------------------------------------
 # Project components

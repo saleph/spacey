@@ -3,3 +3,9 @@ build/
 CMakeSettings.json
 .vscode/
 doc/
+.idea/
+*.user
+.cproject
+.project
+.settings
+*.user*
