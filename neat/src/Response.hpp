@@ -1,6 +1,7 @@
 #ifndef SPACEY_RESPONSE_HPP
 #define SPACEY_RESPONSE_HPP
 
+#include <iostream>
 #include <common/include/FloatingPointUtils.hpp>
 
 namespace spacey::neat {
