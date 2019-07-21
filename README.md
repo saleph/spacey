@@ -47,13 +47,13 @@ The following checks are performed:
 
 Supported configurations:
 
-#### Ubuntu 16.10 (or Higher):
-```
+### Ubuntu 16.10 (or Higher)
+```bash
 sudo apt-get install git build-essential gcc-9 g++-9
 ```
 Additionally you have to install one of the most recent cmake versions (v3.13+) from [CMake v3.13+](https://cmake.org/download/).
 
-#### Windows (Visual Studio):
+### Windows (Visual Studio)
 
 Install the following packages:
 - [Visual Studio SDK 10](https://go.microsoft.com/fwlink/?linkid=838916)
@@ -65,7 +65,7 @@ Install the following packages:
 - [CMake v3.13+](https://cmake.org/download/)
 - [Git for Windows](https://github.com/git-for-windows/git/releases)
 
-#### macOS:
+### macOS
 
 Install the following packages:
 - [XCode 10.0.0+](https://developer.apple.com/xcode/)
@@ -75,8 +75,8 @@ Install the following packages:
 
 To compile and install this example, use the following instructions:
 
-#### GCC / Clang
-```
+### GCC / Clang
+```bash
 git clone https://github.com/saleph/spacey.git
 
 mkdir spacey/build
@@ -86,8 +86,8 @@ make
 make test
 ```
 
-#### Visual Studio 2019 (MSBuild)
-```
+### Visual Studio 2019 (MSBuild)
+```bash
 git clone https://github.com/saleph/spacey.git
 
 mkdir spacey/build
@@ -97,8 +97,8 @@ msbuild spacey.sln
 ctest
 ```
 
-#### XCode 10.0.0+
-```
+### XCode 10.0.0+
+```bash
 git clone https://github.com/saleph/spacey.git
 
 mkdir spacey/build
