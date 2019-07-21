@@ -96,10 +96,10 @@ void Net::calculateResponseFor(Neuron& neuron, VisitedNeuronsMap& visited) {
     // note: input.response may be read for nodes that are marked visited, but not
     // calculated yet. That's normal, it's just a cycle in the network, it will
     // behave like a recurrent neuron (it will use value from previous evaluation)
-    const auto weightedActivation = std::transform_reduce(std::begin(inputs), std::end(inputs),
-    WeightedActivation{ 0.0L }, std::plus<>(), [](auto&& input) {
+    const auto weightedActivation = std::accumulate(std::begin(inputs), std::end(inputs),
+    WeightedActivation{ 0.0L }, [](auto&& accumulatedActivation, auto&& input) {
         auto& [inputNeuron, inputNeuronWeight] = input;
-        return inputNeuron->getResponse() * inputNeuronWeight;
+        return accumulatedActivation + inputNeuron->getResponse() * inputNeuronWeight;
     });
     neuron.setResponse(Neuron::activationFunction(weightedActivation));
 }
