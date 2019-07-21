@@ -7,17 +7,14 @@
 #include <neat/src/Response.hpp>
 #include <neat/src/Neuron.hpp>
 #include <neat/src/NetActivation.hpp>
+#include <neat/src/NetUtils.hpp>
 
 namespace spacey::neat {
+using net_utils::InputSize;
+using net_utils::OutputSize;
+
 class Net {
 public:
-    struct InputSize {
-        std::size_t value;
-    };
-    struct OutputSize {
-        std::size_t value;
-    };
-
     Net() = delete;
     explicit Net(InputSize inputSize, OutputSize outputSize);
 

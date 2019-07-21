@@ -16,7 +16,6 @@ using NeuronList = std::vector<std::unique_ptr<Neuron>>;
 
 class Neuron {
     friend auto operator==(const Neuron& first, const Neuron& second) -> bool;
-    //friend std::hash<Neuron>;
 public:
     static auto activationFunction(WeightedActivation activation) -> Response;
 
@@ -27,8 +26,8 @@ public:
     Neuron(const Neuron& other) = delete;
     Neuron(Neuron&& other) noexcept = default;
     virtual ~Neuron() = default;
-    auto operator=(const Neuron& other) -> Neuron& = delete;
-    auto operator=(Neuron&& other) -> Neuron& = default;
+    Neuron& operator=(const Neuron& other) = delete;
+    Neuron& operator=(Neuron&& other) = default;
 
     virtual void addInputs(const NeuronInputs& additionalInputs);
     [[nodiscard]] auto getInputs() const -> const NeuronInputs&;

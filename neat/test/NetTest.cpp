@@ -10,27 +10,27 @@ using ::testing::UnorderedElementsAre;
 class NetTestFixture : public ::testing::Test {
 public:
     void TearDown() override {
-        net = Net{ Net::InputSize{defaultInputSize}, Net::OutputSize{defaultOutputSize} };
+        net = Net{ InputSize{defaultInputSize}, OutputSize{defaultOutputSize} };
     }
 
     const std::size_t defaultInputSize{ 5 };
     const std::size_t defaultOutputSize{ 6 };
-    Net net{ Net::InputSize{defaultInputSize}, Net::OutputSize{defaultOutputSize} };
+    Net net{ InputSize{defaultInputSize}, OutputSize{defaultOutputSize} };
     const Weight defaultWeight{ 1.0L };
     const Weight noScaling{ defaultWeight };
     const long double inputValue = 10.0L;
 };
 
 TEST_F(NetTestFixture, shouldThrowWhenInputSizeIsZero) {
-    ASSERT_THROW(Net(Net::InputSize{ 0 }, Net::OutputSize{ defaultOutputSize }), gsl::fail_fast);
+    ASSERT_THROW(Net(InputSize{ 0 }, OutputSize{ defaultOutputSize }), gsl::fail_fast);
 }
 
 TEST_F(NetTestFixture, shouldThrowWhenOutputSizeIsZero) {
-    ASSERT_THROW(Net(Net::InputSize{ defaultInputSize }, Net::OutputSize{ 0 }), gsl::fail_fast);
+    ASSERT_THROW(Net(InputSize{ defaultInputSize }, OutputSize{ 0 }), gsl::fail_fast);
 }
 
 TEST_F(NetTestFixture, shouldThrowWhenInputAndOutputSizeAreZero) {
-    ASSERT_THROW(Net(Net::InputSize{ 0 }, Net::OutputSize{ 0 }), gsl::fail_fast);
+    ASSERT_THROW(Net(InputSize{ 0 }, OutputSize{ 0 }), gsl::fail_fast);
 }
 
 TEST_F(NetTestFixture, shouldNetInputsSizeMatchDeclaredOneDuringConstruction) {

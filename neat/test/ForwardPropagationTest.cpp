@@ -21,7 +21,7 @@ public:
 };
 
 TEST_F(ForwardPropagationTestFixture, shouldNetResponseOfOutputDirectlyConnectedToInputWithoutScallingBeCorrect) {
-    auto net = Net{ Net::InputSize{ 1 }, Net::OutputSize{ 1 } };
+    auto net = Net{ InputSize{ 1 }, OutputSize{ 1 } };
     const auto input = net.getNetInputs().front();
     auto output = net.getNetOutputs().front();
     output->addInputs({ NeuronInput{input, noScaling} });
@@ -32,7 +32,7 @@ TEST_F(ForwardPropagationTestFixture, shouldNetResponseOfOutputDirectlyConnected
 }
 
 TEST_F(ForwardPropagationTestFixture, should1to1WithoutScallingBeTheSameForMultipleRuns) {
-    auto net = Net{ Net::InputSize{ 1 }, Net::OutputSize{ 1 } };
+    auto net = Net{ InputSize{ 1 }, OutputSize{ 1 } };
     const auto input = net.getNetInputs().front();
     auto output = net.getNetOutputs().front();
     output->addInputs({ NeuronInput{input, noScaling} });
@@ -48,7 +48,7 @@ TEST_F(ForwardPropagationTestFixture, shouldResponseFor1to1to1RecurrentNetForVar
     // recurrent example, neurons (1, 2, 3), 1 is input, 3 is output, 2 is hidden neuron, hidden neuron
     // takes recurrently response of the output
     // 1->2, 2->3, 3->2
-    auto net = Net{ Net::InputSize{ 1 }, Net::OutputSize{ 1 } };
+    auto net = Net{ InputSize{ 1 }, OutputSize{ 1 } };
     const auto input = net.getNetInputs().front();
     auto hidden = net.addNeuron();
     auto output = net.getNetOutputs().front();
