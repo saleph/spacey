@@ -41,10 +41,7 @@ env:
   global:
    - secure: "kZvyN+SKlPa38/rnue/M4ft/lf1jzD5Y7Oy5jqmt7f4L1QEM4WSSyI7rnYxgMGQLrsdxlntEQIm1iwDt7JRQFsqok2oqr45GkZrTP9pj7fh07rKmmONm9mQdjD47zIVhR4Kt/0Feyk9RV1w0lNACb6Az+LaAcUXN9Mxrs56ExCcFKT1vnH1gCHyLPIPojfxGdaPBQuCXmOdJdEFRwG+jBmQWyHh0ezgmODtUW05FzqqGZF+xJSwW/bbvQsCIK+ugSnDppwWHtU4uqVpZwPkjj9dARaPEv+scpRlyvSpqOzybgGS6NtuLq49g0vlZkplX8znlzFMbZQ+fNP/zUtQWYX3X9hfU/bW+7yVHOmtCZi+2LE3vipatybytAt/caMqddPgOfR4xpbn31N3wuyx+e8VcGEYc20dQTshrZeCv24entE/g8k7gJKeSJKSoK9EBh9upGAWF27PNdtRTv6GoxSq5UbAJ2tXz+wbkAr8VZt3PeZkhH9sB6nC+TeDf5M1ZX3h7u6ykMY1i9nG9MfvaKJC1zTZ1YkoZco0DvB8RIU5nBOcEPuX2JnECrTvEWToPggntyG5Nuq7bW8kYxRt3o/Vxlw4/2ZRT1ax1N+uuvZ/8aannTuVn1XfifKO3p3KYvX5TSQ3OAODFSB1LFPZbZQT6PNhoed4sGDvnhEdoZyU="
 
-before_install:
-  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
-
-   #
+#
 # Build Dependencies
 #
 before_script:
@@ -217,9 +214,9 @@ matrix:
           - g++-9
       coverity_scan:
         project:
-          name: "ainfosec/spacey"
+          name: "saleph/spacey"
           description: "A simple example of how to setup a complete CI environment for C and C++"
-        notification_email: rianquinn@gmail.com
+        notification_email: saleph@protonmail.com
         build_command_prepend: "cmake -DCMAKE_CXX_COMPILER=g++-9 .."
         build_command: "make"
         branch_pattern: master
@@ -271,7 +268,7 @@ matrix:
         coveralls --build-root build --gcov-options '\-lp' \
           -e build/external \
           -e build/include \
-          -e build/CMakeFiles/3.8.0 \
+          -e build/CMakeFiles/3.14.3 \
           -e build/CMakeFiles/feature_tests.c \
           -e build/CMakeFiles/feature_tests.cxx
 
